@@ -1,0 +1,16 @@
+{
+  "name": "lambda-view",
+  "version": "1.0.0",
+  "description": "Read complex source code happlily.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "formatter",
+    "reader",
+    "analyzer"
+  ],
+  "author": "Jianru Lin",
+  "license": "MIT"
+}
