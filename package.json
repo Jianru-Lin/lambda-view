@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Read complex source code happlily.",
   "main": "index.js",
+  "bin": {
+    "lv": "./index.js",
+    "lambda-view": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +16,10 @@
     "analyzer"
   ],
   "author": "Jianru Lin",
-  "license": "MIT"
+  "email": "jianru.lin@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "fmtjs": "^1.0.0",
+    "minimist": "^1.2.0"
+  }
 }
