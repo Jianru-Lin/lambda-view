@@ -38,7 +38,7 @@ function compile(in_filename) {
 		log.info(ok ? 'done :)' : 'failed, try opening it manually please :(')
 	}
 	catch (err) {
-		log.error(err.toString())
+		log.error(err.message)
 	}
 }
 
