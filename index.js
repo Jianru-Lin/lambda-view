@@ -2,13 +2,14 @@
 var helper = require('./helper')
 var path = require('path')
 var fmtjs = require('fmtjs')
-var args = require('minimist')(process.argv.slice(2))
+var argv = process.argv.slice(2)
+var args = require('minimist')(argv)
 var log = helper.log
 
 run()
 
 function run() {
-	if (args.help || args.h) {
+	if (argv.length === 0 || args.help || args.h) {
 		print_usage()
 	}
 	else if (args.version || args.v) {
@@ -43,9 +44,9 @@ function compile(in_filename) {
 
 function print_version() {
 	var p = require('./package.json')
-	log.info(`${p.name} v${p.version} by ${p.author} (${p.email})`)
+	console.log(`${p.name} v${p.version} by ${p.author} (${p.email})`)
 }
 
 function print_usage() {
-	log.info('Usage: lv <file.js>')
+	console.log('Usage: lv <file.js>')
 }
