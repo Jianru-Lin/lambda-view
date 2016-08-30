@@ -29,7 +29,7 @@ function compile(in_filename) {
 		log.info('read file from ' + JSON.stringify(in_filename) + "...")
 		var in_content = helper.load_utf8_file(in_filename)
 		log.info('parsing javascript source code and generating html content...')
-		var out_content = fmtjs(in_content, {mode: 'html', filename: in_filename_base})
+		var out_content = fmtjs(in_content, {mode: 'html', filename: in_filename_base, version: require('./package.json').version})
 		// log.info('calculating hash...')
 		var out_filename = 'lambda-view-' + helper.hash(out_content) + '-' + in_filename_base + '.html'
 		out_filename = path.resolve(helper.tmp_dir(), out_filename)
