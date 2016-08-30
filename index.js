@@ -16,7 +16,9 @@ function run() {
 		print_version()
 	}
 	else {
-		compile(args._[0])
+		args._.forEach(function(file) {
+			compile(file)
+		})
 	}
 }
 
