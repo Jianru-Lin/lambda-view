@@ -4,7 +4,7 @@
 
 ## 安装 & 用法
 
-执行下面的命令便能将 lambda-view 安装到你的系统中（执行前请确保您已经安装了[node.js](https://nodejs.org/)）：
+执行下面的命令便能将 lambda-view 安装到你的系统中（执行前请确保您已经安装了[node.js](https://nodejs.org/)，对于某些系统可能需要管理员权限）：
 
 ```
 npm install -g lambda-view
@@ -17,6 +17,16 @@ lv /path/somewhere/xyz.js
 ```
 
 就这么简单！
+
+## 别忘了常常更新
+
+由于这个项目还在频繁改进中，如果遇到了莫名其妙的故障，不妨试试执行下面的命令更新到最新版（对于某些系统可能需要管理员权限）：
+
+```
+npm update -g lambda-view
+```
+
+如果还是解决不了，那么请告知我（建议在[这里](https://github.com/Jianru-Lin/lambda-view/issues)提出，其它人也能看到），我会尽快处理。非常希望得到反馈，真的。
 
 ## 主要优势
 
