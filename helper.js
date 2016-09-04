@@ -41,10 +41,10 @@ function open_html_file(filename) {
 	var exec = require('child_process').exec
 	switch (require('os').platform()) {
 		case 'darwin':
-			exec('open ' + JSON.stringify(filename))
+			exec('open ' + JSON.stringify(filename)).unref()
 			return true
 		case 'win32':
-			exec(JSON.stringify(filename))
+			exec(JSON.stringify(filename)).unref()
 			return true
 		default:
 			return false
