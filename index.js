@@ -46,7 +46,8 @@ function compile(in_filename) {
 
 function print_version() {
 	var p = require('./package.json')
-	console.log(`${p.name} v${p.version} by ${p.author} (${p.email})`)
+	var author = (p.author && p.author.name) ? p.author.name : p.author
+	console.log(`${p.name} v${p.version} by ${author} (${p.email})`)
 }
 
 function print_usage() {
