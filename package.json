@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "fmtjs": "^1.2.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "open": "^0.0.5"
   }
 }

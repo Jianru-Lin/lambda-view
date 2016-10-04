@@ -1,5 +1,6 @@
 var fs = require('fs')
 var path = require('path')
+var open = require('open')
 
 // load specific file as utf-8 file and return
 // the file content without bom and shebang
@@ -38,17 +39,8 @@ function hash(text) {
 }
 
 function open_html_file(filename) {
-	var exec = require('child_process').exec
-	switch (require('os').platform()) {
-		case 'darwin':
-			exec('open ' + JSON.stringify(filename)).unref()
-			return true
-		case 'win32':
-			exec(JSON.stringify(filename)).unref()
-			return true
-		default:
-			return false
-	}
+  open(filename)
+  return true
 }
 
 function date() {
