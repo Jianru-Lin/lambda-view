@@ -2,9 +2,17 @@
 
 大型项目的 JavaScript 代码很难阅读？试试 lambda-view，它能解析指定的 JavaScript 源代码文件，转换为适合阅读和分析的形式助你度过难关。
 
+## 最新版本
+
+最新版本为 v4.11.0，发布于2016年10月15日。该版本相较于早前版本作了许多实用性改进，建议更新。
+
+## 支持的平台
+
+lambda-view 基于 Node.js 开发，可以在 Windows、MacOS、Linux 等环境下使用。使用前请先安装 Node.js 主程序，建议[前往官网下载](https://nodejs.org/)。
+
 ## 安装 & 用法
 
-执行下面的命令便能将 lambda-view 安装到你的系统中（执行前请确保您已经安装了[node.js](https://nodejs.org/)，对于某些系统可能需要管理员权限）：
+执行下面的命令便能将 lambda-view 安装到你的系统中（对于某些系统可能需要管理员权限）：
 
 ```
 npm install -g lambda-view
@@ -20,10 +28,16 @@ lv /path/somewhere/xyz.js
 
 ## 别忘了常常更新
 
-由于这个项目还在频繁改进中，如果遇到了莫名其妙的故障，不妨试试执行下面的命令更新到最新版（对于某些系统可能需要管理员权限）：
+由于这个项目还在频繁改进中，如果遇到了莫名其妙的故障，不妨试试更新到最新版（对于某些系统可能需要管理员权限）。虽然 npm 自带了 update 操作，但根据实践反馈，最佳的方式是首先卸载：
 
 ```
-npm update -g lambda-view
+npm uninstall -g lambda-view
+```
+
+然后重装：
+
+```
+npm uninstall -g lambda-view@latest
 ```
 
 如果还是解决不了，那么请告知我（建议在[这里](https://github.com/Jianru-Lin/lambda-view/issues)提出，其它人也能看到），我会尽快处理。非常希望得到反馈，真的。
