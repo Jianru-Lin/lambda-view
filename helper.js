@@ -1,13 +1,15 @@
 var fs = require('fs')
 var path = require('path')
+var loader = require('fmtjs-loader')
 var open = require('open')
 
-// load specific file as utf-8 file and return
-// the file content without bom and shebang
-function load_utf8_file(filename) {
-	filename = path.resolve(filename)
-	var content = fs.readFileSync(filename, 'utf8')
-	return strip_shebang(strip_bom(content))
+function load_utf8_file(filename, cb) {
+	loader.load(filename, function(err, result) {
+		if (!err) {
+			result.content = strip_shebang(strip_bom(result.content))
+		}
+		cb(err, result)
+	})
 }
 
 // save content to specific file as utf-8 encoding
