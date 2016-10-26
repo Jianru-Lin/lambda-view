@@ -1,5 +1,6 @@
 var fs = require('fs')
 var path = require('path')
+var chalk = require('chalk')
 var loader = require('fmtjs-loader')
 var open = require('open')
 
@@ -57,9 +58,19 @@ exports.hash = hash
 exports.open_html_file = open_html_file
 exports.log = {
 	info: function(text) {
-		console.log('[?d] INFO '.replace('?d', date()) + text)
+		console.log(
+			[
+				chalk.blue('[?d] INFO'.replace('?d', date())),
+				text
+			].join(' ')
+		)
 	},
 	error: function(text) {
-		console.log('[?d] ERROR '.replace('?d', date()) + text)
+		console.log(
+			[
+				'[?d] ERROR '.replace('?d', date()),
+				chalk.red(text)
+			].join(' ')
+		)
 	}
 }
