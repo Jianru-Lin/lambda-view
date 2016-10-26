@@ -68,7 +68,7 @@ exports.log = {
 	error: function(text) {
 		console.log(
 			[
-				'[?d] ERROR '.replace('?d', date()),
+				chalk.blue('[?d] ERROR'.replace('?d', date())),
 				chalk.red(text)
 			].join(' ')
 		)

@@ -16,8 +16,11 @@ function run() {
 		print_version()
 	}
 	else {
-		var tasks = args._.map(function(file) {
+		var tasks = args._.map(function(file, i, arr) {
 			return function(cb) {
+				if (i > 0) {
+					console.log('')
+				}
 				compile(file, cb)
 			}
 		})
@@ -29,7 +32,7 @@ function run_tasks(tasks) {
 	if (tasks.length < 1) return
 	var curr = tasks[0]
 	var rest = tasks.slice(1)
-	curr(function(err) {debugger
+	curr(function(err) {
 		if (err) return
 		run_tasks(rest)
 	})
