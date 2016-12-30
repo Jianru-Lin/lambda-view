@@ -65,6 +65,7 @@ function compile(target, cb) {
 		}
 		catch (err) {
 			log.error(err.message)
+			// console.log(err.stack)
 			cb(err)
 		}
 	})
