@@ -1,33 +1,33 @@
 {
-  "name": "lambda-view",
-  "version": "4.19.0",
-  "description": "Read complex source code happlily.",
-  "main": "index.js",
-  "bin": {
-    "lv": "./index.js",
-    "lambda-view": "./index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Jianru-Lin/lambda-view.git"
-  },
-  "keywords": [
-    "formatter",
-    "reader",
-    "analyzer"
-  ],
-  "author": "Jianru Lin",
-  "email": "jianru.lin@gmail.com",
-  "license": "MIT",
-  "dependencies": {
-    "chalk": "^1.1.3",
-    "fmtjs": "^1.7.0",
-    "fmtjs-loader": "^1.2.0",
-    "minimist": "^1.2.0",
-    "open": "^0.0.5",
-    "request": "^2.75.0"
-  }
+    "name": "lambda-view",
+    "version": "4.20.0",
+    "description": "Read complex source code happlily.",
+    "main": "index.js",
+    "bin": {
+        "lv": "./index.js",
+        "lambda-view": "./index.js"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Jianru-Lin/lambda-view.git"
+    },
+    "keywords": [
+        "formatter",
+        "reader",
+        "analyzer"
+    ],
+    "author": "Jianru Lin",
+    "email": "jianru.lin@gmail.com",
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^1.1.3",
+        "fmtjs": "4.20.0",
+        "fmtjs-loader": "4.20.0",
+        "minimist": "^1.2.0",
+        "open": "^0.0.5",
+        "request": "^2.75.0"
+    }
 }
