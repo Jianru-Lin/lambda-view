@@ -169,11 +169,6 @@ npm install -g lambda-view
 
 如果还是解决不了，那么请告知我（建议在[这里](https://github.com/Jianru-Lin/lambda-view/issues)提出，其它人也能看到），我会尽快处理。非常希望得到反馈，真的。
 
-
-## 最新版本
-
-最新版本为 v4.18.0，发布于 2016 年 12 月 30 日。该版本相较于早前版本作了许多实用性改进，建议更新。
-
 ## 主要优势
 
 lambda-view 的主要目标是用于“阅读代码”，它和你使用的 Sublime Text 或者 Atom 等编辑器不同，lambda-view 没有编辑功能。但它具备如下优势：
