@@ -5,6 +5,10 @@ var fmtjs = require('fmtjs')
 var argv = process.argv.slice(2)
 var args = require('minimist')(argv)
 var log = helper.log
+var web = require('fmtjs-web')
+
+// start web server in background
+// web.start_bg()
 
 run()
 
@@ -65,7 +69,7 @@ function compile(target, cb) {
 		}
 		catch (err) {
 			log.error(err.message)
-			// console.log(err.stack)
+			console.log(err.stack)
 			cb(err)
 		}
 	})

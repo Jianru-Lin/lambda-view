@@ -1,0 +1,1 @@
+require('fmtjs-web').stop()
