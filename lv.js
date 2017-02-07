@@ -7,9 +7,6 @@ var args = require('minimist')(argv)
 var log = helper.log
 var web = require('fmtjs-web')
 
-// start web server in background
-// web.start_bg()
-
 run()
 
 function run() {
