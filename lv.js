@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var helper = require('./helper')
+var assert = require('assert')
 var path = require('path')
 var program = require('commander')
 var async = require('async')
@@ -8,46 +9,64 @@ var log = helper.log
 
 program
 	.version(require('./package').version)
+	// .option('-s, --simple-mode', 'analyze as simple mode')
+	// .option('-p, --package-mode', 'analyze as package mode')
 
-program
-	.command('simple <file...>')
-	.description('analyze file as simple mode')
-	.action(function(files) {
-		// check is web server started?
-		is_web_server_started(
-			function yes() {
-				var funs = files.map(function(file) {
-					return function(callback) {
-						compile(file, function(err) {
-							if (err) {
-								callback(err)
-							}
-							else {
-								console.log('')
-								callback(err)
-							}
-						})
-					}
-				})
-				async.series(funs, function(err, results) {
-					if (err) {
-						return
-					}
-				})
-			},
-			function no() {
-				log.error('Lambda-view server not started yet. Run "lv-svr start" to start it then retry again.')
-				log.error('See https://github.com/Jianru-Lin/lambda-view for more details.')
-			}
-		)
+program.parse(process.argv)
 
-	})
-
-if (process.argv.length <= 2) {
-	program.parse(process.argv.concat(['--help']))
+if (!program.args.length) {
+	program.help()
 }
 else {
-	program.parse(process.argv)
+	run(program.args)
+}
+
+function run(files) {
+	// start web server automatically
+	start_web_server(function(err) {
+		if (err) return
+
+		var funs = files.map(function(file) {
+			return function(callback) {
+				compile(file, function(err) {
+					if (err) {
+						callback(err)
+					}
+					else {
+						console.log('')
+						callback(err)
+					}
+				})
+			}
+		})
+		async.series(funs, function(err, results) {
+			if (err) {
+				return
+			}
+		})
+	})
+}
+
+function start_web_server(cb) {
+	is_web_server_started(
+		function yes() {
+			cb()
+		},
+		function no() {
+			var opt = {
+				background: true,
+				public: false
+			}
+			require('fmtjs-web').start(opt, function(err, status) {
+				if (err) {
+					log.error(err.message)
+					cb(err)
+					return
+				}
+				cb()
+			})
+		}
+	)
 }
 
 function is_web_server_started(yes_cb, no_cb) {
@@ -72,18 +91,15 @@ function compile(target, cb) {
 		}
 		try {
 			log.info('parsing javascript source code and generating html content...')
-			var out_content = fmtjs(input.content, {
+			var result = fmtjs(input.content, {
 				mode: 'html', 
 				filename: input.filename, 
 				version: require('./package.json').version
 			})
-			// log.info('calculating hash...')
-			var out_filename = 'lambda-view-' + helper.hash(out_content) + '-' + input.filename + '.html'
-			out_filename = path.resolve(helper.tmp_dir(), out_filename)
-			log.info('write file to ' + jstr(out_filename) + "...")
-			helper.save_utf8_file(out_filename, out_content)
+
+			assert(typeof result.url === 'string')
 			log.info('try opening it using your default web browser...')
-			var ok = helper.open_html_file(out_filename)
+			var ok = helper.open_html_file(result.url)
 			log.info(ok ? 'done :)' : 'failed, try opening it manually please :(')
 			cb()
 		}

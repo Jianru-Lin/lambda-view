@@ -6,9 +6,14 @@ program
 program
 	.command('start')
 	.description('start lambda-view web server')
+	.option('-b, --background', 'run in background')
+	.option('-p, --public', 'enable public access')
 	.action(function() {
 		console.log('starting lambda-view web server...')
-		var opt = {}
+		var opt = {
+			background: this.background,
+			public: this.public
+		}
 		require('fmtjs-web').start(opt, function(err, status) {
 			if (err) {
 				console.error(err.message)
