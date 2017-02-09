@@ -1,41 +1,64 @@
 #!/usr/bin/env node
 var helper = require('./helper')
 var path = require('path')
+var program = require('commander')
+var async = require('async')
 var fmtjs = require('fmtjs')
-var argv = process.argv.slice(2)
-var args = require('minimist')(argv)
 var log = helper.log
-var web = require('fmtjs-web')
 
-run()
+program
+	.version(require('./package').version)
 
-function run() {
-	if (argv.length === 0 || args.help || args.h) {
-		print_usage()
-	}
-	else if (args.version || args.v) {
-		print_version()
-	}
-	else {
-		var tasks = args._.map(function(file, i, arr) {
-			return function(cb) {
-				if (i > 0) {
-					console.log('')
-				}
-				compile(file, cb)
+program
+	.command('simple <file...>')
+	.description('analyze file as simple mode')
+	.action(function(files) {
+		// check is web server started?
+		is_web_server_started(
+			function yes() {
+				var funs = files.map(function(file) {
+					return function(callback) {
+						compile(file, function(err) {
+							if (err) {
+								callback(err)
+							}
+							else {
+								console.log('')
+								callback(err)
+							}
+						})
+					}
+				})
+				async.series(funs, function(err, results) {
+					if (err) {
+						return
+					}
+				})
+			},
+			function no() {
+				log.error('Lambda-view server not started yet. Run "lv-svr start" to start it then retry again.')
+				log.error('See https://github.com/Jianru-Lin/lambda-view for more details.')
 			}
-		})
-		run_tasks(tasks)
-	}
+		)
+
+	})
+
+if (process.argv.length <= 2) {
+	program.parse(process.argv.concat(['--help']))
+}
+else {
+	program.parse(process.argv)
 }
 
-function run_tasks(tasks) {
-	if (tasks.length < 1) return
-	var curr = tasks[0]
-	var rest = tasks.slice(1)
-	curr(function(err) {
-		if (err) return
-		run_tasks(rest)
+function is_web_server_started(yes_cb, no_cb) {
+	var web = require('fmtjs-web')
+	web.status(function(err, status) {
+		if (err) {
+			no_cb()
+		}
+		else {
+			yes_cb()
+		}
 	})
 }
 
