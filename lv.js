@@ -7,6 +7,10 @@ var async = require('async')
 var fmtjs = require('fmtjs')
 var log = helper.log
 
+var g = {
+	url: null
+}
+
 program
 	.version(require('./package').version)
 	// .option('-s, --simple-mode', 'analyze as simple mode')
@@ -23,8 +27,10 @@ else {
 
 function run(files) {
 	// start web server automatically
-	start_web_server(function(err) {
+	start_web_server(function(err, status) {
 		if (err) return
+
+		g.url = status.url
 
 		var funs = files.map(function(file) {
 			return function(callback) {
@@ -49,8 +55,8 @@ function run(files) {
 
 function start_web_server(cb) {
 	is_web_server_started(
-		function yes() {
-			cb()
+		function yes(status) {
+			cb(undefined, status)
 		},
 		function no() {
 			var opt = {
@@ -63,7 +69,7 @@ function start_web_server(cb) {
 					cb(err)
 					return
 				}
-				cb()
+				cb(undefined, status)
 			})
 		}
 	)
@@ -76,7 +82,7 @@ function is_web_server_started(yes_cb, no_cb) {
 			no_cb()
 		}
 		else {
-			yes_cb()
+			yes_cb(status)
 		}
 	})
 }
@@ -97,9 +103,9 @@ function compile(target, cb) {
 				version: require('./package.json').version
 			})
 
-			assert(typeof result.url === 'string')
+			assert(typeof result.id === 'string')
 			log.info('try opening it using your default web browser...')
-			var ok = helper.open_html_file(result.url)
+			var ok = helper.open_html_file(g.url + '/lv.html?id=' + result.id)
 			log.info(ok ? 'done :)' : 'failed, try opening it manually please :(')
 			cb()
 		}
