@@ -2,9 +2,11 @@
 
 lambda-view provids you a better way to READ JavaScript source code. 
 
-# Screenshots
+# Screenshots & Demos
 
 ![](screenshots/lambda-view-demo.js.png)
+
+There is an online demo here: http://demo.lambda-view.com/lv.html?id=681d04725b42d536
 
 # Get started in 2 steps
 

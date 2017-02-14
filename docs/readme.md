@@ -2,9 +2,11 @@
 
 lambda-view provids you a better way to READ JavaScript source code. 
 
-# Screenshots
+# Screenshots & Demos
 
 ![](screenshots/lambda-view-demo.js.png)
+
+There is an online demo here: http://demo.lambda-view.com/lv.html?id=681d04725b42d536
 
 # Get started in 2 steps
 
@@ -84,4 +86,9 @@ Please make sure:
 # Future plans
 
 This is just a begining. I'll add more features soon. 
+
+# About me
+
+I have been developing software for over 5 years. Now I am looking for a new full-time remote job. (jianru.lin@gmail.com)
+
 
