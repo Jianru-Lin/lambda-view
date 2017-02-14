@@ -1,4 +1,4 @@
-# lambda-view: An New Tool for Reading JavaScript Code
+# lambda-view: A New Tool for Reading JavaScript Code
 
 lambda-view provids you a better way to READ JavaScript source code. You can use it to read any ES5/ES6 JavaScript code.
 
