@@ -85,3 +85,8 @@ Please make sure:
 
 This is just a begining. I'll add more features soon. 
 
+# About me
+
+I have been developing software for over 5 years. Now I am looking for a new full-time remote job. (jianru.lin@gmail.com)
+
+
