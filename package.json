@@ -1,6 +1,6 @@
 {
     "name": "lambda-view",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "description": "A New Tool for Reading JavaScript Code",
     "main": "lv.js",
     "bin": {
