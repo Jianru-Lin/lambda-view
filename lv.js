@@ -105,8 +105,14 @@ function compile(target, cb) {
 
 			assert(typeof result.id === 'string')
 			log.info('try opening it using your default web browser...')
-			var ok = helper.open_html_file(g.url + '/lv.html?id=' + result.id)
-			log.info(ok ? 'done :)' : 'failed, try opening it manually please :(')
+			var open_url = g.url + '/lv.html?id=' + result.id
+			var ok = helper.open_html_file(open_url)
+			if (ok) {
+				log.info('done, ' + open_url)
+			}
+			else {
+				log.info('failed, try opening it manually ' + open_url)
+			}
 			cb()
 		}
 		catch (err) {
