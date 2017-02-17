@@ -1,100 +1,90 @@
-# lambda-view
+# lambda-view: A New Tool for Reading JavaScript Code in 2017
 
-大型项目的 JavaScript 代码很难阅读？试试 lambda-view，它能解析指定的 JavaScript 源代码文件，转换为适合阅读和分析的形式助你度过难关。
+[![Join the chat at https://gitter.im/Jianru-Lin/lambda-view](https://badges.gitter.im/Jianru-Lin/lambda-view.svg)](https://gitter.im/Jianru-Lin/lambda-view?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## 最新版本
+lambda-view provids you a better way to READ JavaScript source code. 
 
-最新版本为 v4.15.0，发布于2016年10月25日。该版本相较于早前版本作了许多实用性改进，建议更新。
+# Screenshots & Demos
 
-## 支持的平台
+![](screenshots/lambda-view-demo.js.png)
 
-lambda-view 基于 Node.js 开发，可以在 Windows、MacOS、Linux 等环境下使用。使用前请先安装 Node.js 主程序，建议[前往官网下载](https://nodejs.org/)。
+There is an online demo here: [http://demo.lambda-view.com/lv.html?id=681d04725b42d536](http://demo.lambda-view.com/lv.html?id=681d04725b42d536)
 
-## 安装 & 用法
+# Get started in 2 steps
 
-执行下面的命令便能将 lambda-view 安装到你的系统中（对于某些系统可能需要管理员权限）：
-
-```
-npm install -g lambda-view
-```
-
-然后你就可以执行 lv 命令来分析任何的 JavaScript 文件了：
-
-```
-lv /path/somewhere/xyz.js
-```
-
-就这么简单！
-
-## 别忘了常常更新
-
-由于这个项目还在频繁改进中，如果遇到了莫名其妙的故障，不妨试试更新到最新版。虽然 npm 自带了 update 操作，但根据实践，最佳的方式是首先卸载：
-
-```
-npm uninstall -g lambda-view
-```
-
-然后重装：
+STEP-1 install it via npm (sudo required maybe):
 
 ```
 npm install -g lambda-view
 ```
 
-如果还是解决不了，那么请告知我（建议在[这里](https://github.com/Jianru-Lin/lambda-view/issues)提出，其它人也能看到），我会尽快处理。非常希望得到反馈，真的。
+STEP-2 use lv command to open any JavaScript file:
 
-## 主要优势
+```
+lv target.js
+```
 
-lambda-view 的主要目标是用于“阅读代码”，它和你使用的 Sublime Text 或者 Atom 等编辑器不同，lambda-view 没有编辑功能。但它具备如下优势：
+Then (if everything is ok), your web browser will be opened automatically and shows you the result. Pretty easy, right? 
 
-* 能够将 JavaScript 源代码的“结构”展现出来，而不仅仅是文本
-* 表达式计算顺序通过括号原样呈现出来，能够很容易的看清楚而不会弄错
-* 基于 Grammar 的高亮，准确无歧义
-* 随心所欲的折叠，不仅是函数块，非常方便
-* 转换为单个 Html 文件，无外部依赖，可以在移动端（特别是 ipad 上）方便的阅读代码
+# Helpful tips
 
-## ECMAScript 2016 语法支持
+### Can I open remote file by URL?
 
-截止到 2016-09-15 已经基本完成了对 ECMAScript 2016 语法的支持。可以放心使用。
+Yes, lv command accepts URL:
 
-## 已知缺陷
+```
+lv https://code.jquery.com/jquery-3.1.1.js
+```
 
-* 对于万行级别 JavaScript 代码文件，转换后的 Html 页面消耗的资源较高，以 jQuery3 slime 为例，在 Chrome 中大致需要消耗超过 150MB 的内存，而微软的 Edge 浏览器则需要超过 400MB 的内存
+### Can I open multiple files in one command?
 
-性能方面，我在设计时已经有所考虑。实际上有一些办法可以大大降低资源消耗。但我会把这项工作推迟一些。因为虽然内存消耗看起来有些吓人，我在实际使用中并未遇到任何问题（使用 Chrome 浏览器）。
+Yes, you can provide multiple filenames to lv command:
 
-## 历史回顾 & 未来计划
+```
+lv file1.js file2.js file3.js
+```
 
-我从 2014 年中开始萌生开发 lambda-view 的想法，目的是解决 JavaScript 代码难以阅读的问题，主要是无处不在的嵌套函数让人眩晕。后来我花了一周多写出了第一个粗糙的原型，在这里可以了解我当时的情况：[阅读大型 JavaScript 源码时有什么好用的工具？](https://www.zhihu.com/question/25490540/answer/30883710)
+Further more, you can use the wildcard (For Linux/Mac only, Not Windows):
 
-由于工作繁忙，不久后，我就停止继续开发了。我关闭了服务器上的相关页面，只是在自己的计算机上安装了本地版本继续使用。在这两年时间里，早期那个粗糙的 lambda-view 一次又一次帮助我理解了一些复杂项目内部的工作机制。我对它的价值有了新的认识。所以我又萌生出了继续开发的念头。于是这个项目又复活了。
+```
+lv *.js
+```
 
-在新的 lambda-view 中我的计划是实现以下目标：
+### Can I use lambda-view on my iphone/ipad?
 
-* 利用复杂的布局更充分的展现出 JavaScript 源代码的结构，跳出传统编辑器思维方式
-* 能够针对语句、表达式作注解（如 Markdown 格式），把对代码的理解和疑惑与代码结构直接衔接起来，为持续性的研究提供支持
-* 对代码本身进行尽可能多的辅助分析，例如变量作用域分析、变量生命周期分析、（有限程度的）类型推导、结构相似性分析等
-* 提供一些常用的代码重写工具，例如规范化重写、常量折叠重写、加密变换重写、解密变换重写等
-* 必须对移动端提供良好的支持（我非常喜欢在 ipad 上看资料，包括代码）
+Yes. 
 
-## 一点思辨
+This is an experimental feature. 
 
-我起初并不是很喜欢读代码，根本原因是那时候读不懂。但由于工作关系，很多时候需要搞清楚一些开源工具内部的工作机制才行，这时仅看一些外围资料就不够了，读代码是最直接的甚至常常是唯一的办法。这个过程是比较痛苦的，开始时不懂的地方很多，读的慢。付出的时间和收获的知识不成正比，但随着时间推移，情况就逐步改观了，从大部分读不懂变成了大部分都读得懂——这时候看着复杂的代码再也不会感觉晕头转向不知所措了。信心有了，也就不再把这当成一件头疼事，而是以平常心对待了。甚至近来演变成了一种乐趣。
+lambda-view embeded a small web server which accepts local access only by default. However you can reconfigure it to accept public access. This makes your computer become a web server that can be accessed by your iphone/ipad. 
 
-不过我的情况并不算主流。大部分同行还是倾向于本能的避免去读代码的。不同的人有不同的说法，我也无法斩钉截铁的说自己的方法才是正确的，毕竟没有看到过有什么科学研究能证明读代码的程序员一定比不读的好的（如果有请告诉我）。所以我只能从我自己的角度出发，谈谈读代码的两个最大的好处：
+You can achieve it in 3 steps.
 
-1. 克服恐惧，给自己带来勇气
-2. 发现他人的优点，让自己保持谦虚
+STEP-1 stop current lambda-view web server:
 
-我没有列举因为读代码而提升技术水平这样的好处（当然这是必然存在的），而是列了两个心理方面的好处。这是因为当我回顾自己从害怕读代码，到喜欢读代码的转变过程里，技术层面的提升虽然不小但想想也是水到渠成的事——毕竟认真学习总会使人进步，任何人都是如此——但心理层面的改变自己感觉更深刻些更值得说出来。具体来说，可以说就是发现了新世界。
+```
+lv-svr stop
+```
 
-一方面，通过阅读代码，以前觉得高大上的各种框架和平台也变得平和了，不再有各种说不清的疑惑和猜测（有的话就看代码搞明白），从盲目的钦佩和仰视心态变得更加理性和客观。而达到这一层面的关键首先还是具有“勇气”——面对陌生的代码不恐惧。当然，说起来轻松，勇气也不是一夜之间获得的，也是一步步不断增长的过程。具体到自己身上，我是先从简单的代码开始读的，然后有了一点点信心后，就有勇气去读更复杂的代码。慢慢的就有了足够的勇气，不害怕任何陌生代码了。
+STEP-2 start lambda-view web server with public mode:
 
-另一方面，代码都是人写的，阅读代码的过程里，也是了解其它人的一个很好的窗口。有些人思想活跃，口才好，谈论很多时髦的概念；有些则话比较少，看起来似乎没什么想法。但如果仅仅凭借外在的感受就判断他们的水平，常常是有很大偏差的。直接阅读代码才能更加清晰的了解他们的真实水平。当然读代码的目标并不是去给人打分（那是管理层的工作），而是学习别人优秀的闪光之处。因为如果是带着挑毛病，看缺点的角度去读代码的话，那么这世上我想是没有挑不出毛病，完美无缺的代码的。可是这样做也变得毫无意义，除了让自己得意洋洋之外，并不能学会什么新东西，反而让自己的心胸更加狭窄。反过来，带着学习和欣赏的心态去读代码，则能学到很多东西。特别是通过对比研究不同的设计思路（包括与自己能想到的方案对比）并尝试评价其优缺点，能够学到丰富的知识。有时候看到精彩的设计，真是深深佩服，感觉优秀的人真是比想象的多很多。这种因为阅读代码而影响自己对同行的看法的，是很深远的。
+```
+lv-svr start --public --background
+```
 
-这些是我想到的方面。零零碎碎说了太多。总而言之很明显我是希望大家也能喜欢读代码的。对于那些不读代码，又声称读代码无意义的人，我是反对的。这一点永远也不会变。毕竟不断的学习是我们能取得进步的关键，而阅读代码正是一种非常深入的学习方式，如果只是停留在读文档、读论文、自己埋头写代码而从不读别人的代码的话，我是很怀疑这样的学习方法能走多远的。
+STEP-3 open any JavaScript file you want to read on your iphone/ipad:
 
-当然传统上由于工具缺乏阅读代码的体验确实也不佳，所以我很希望 lambda-view 能对大家有所帮助，感觉到阅读代码也可以是一件舒服的事情，有更多的人愿意去尝试。那么我会非常开心。
+```
+lv some-file.js
+```
 
-谢谢。
+Now, the web browser will be opened, and you can copy it's URL to your iphone/ipad's safari. Then you can read it. (Your iphone/ipad )
 
-by 林建入 2016年8月30日
+Please make sure:
+
+* Your computer and your iphone/ipad must connected to the same LAN
+* If there is any firewall enabled on your computer, please configure it to allow public access on TCP port 23400
+
+# Future plans
+
+This is just a begining. I'll add more features soon. 
