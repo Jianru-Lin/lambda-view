@@ -24,6 +24,12 @@ lv target.js
 
 Then (if everything is ok), your web browser will be opened automatically and shows you the result. Pretty easy, right? 
 
+# Talk to me
+
+I created a gitter chat room here: 
+
+[![Gitter](https://badges.gitter.im/Jianru-Lin/lambda-view.svg)](https://gitter.im/Jianru-Lin/lambda-view?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 # Helpful tips
 
 ### Can I open remote file by URL?
