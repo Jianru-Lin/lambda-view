@@ -6,7 +6,7 @@ lambda-view provides you a better way to READ JavaScript source code.
 
 ![](screenshots/lambda-view-demo.js.png)
 
-There is an online demo here: [http://demo.lambda-view.com/lv.html?id=a46ab6a4b6b86478](http://demo.lambda-view.com/lv.html?id=681d04725b42d536)
+There is an online demo here: [http://demo.lambda-view.com/lv.html?id=a46ab6a4b6b86478](http://demo.lambda-view.com/lv.html?id=a46ab6a4b6b86478)
 
 # Get started in 2 steps
 
