@@ -1,12 +1,12 @@
 # lambda-view: A New Tool for Reading JavaScript Code in 2017
 
-lambda-view provids you a better way to READ JavaScript source code. 
+lambda-view provides you a better way to READ JavaScript source code. 
 
 # Screenshots & Demos
 
 ![](screenshots/lambda-view-demo.js.png)
 
-There is an online demo here: [http://demo.lambda-view.com/lv.html?id=681d04725b42d536](http://demo.lambda-view.com/lv.html?id=681d04725b42d536)
+There is an online demo here: [http://demo.lambda-view.com/lv.html?id=a46ab6a4b6b86478](http://demo.lambda-view.com/lv.html?id=681d04725b42d536)
 
 # Get started in 2 steps
 
