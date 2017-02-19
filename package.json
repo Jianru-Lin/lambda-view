@@ -1,6 +1,6 @@
 {
     "name": "lambda-view",
-    "version": "5.5.1",
+    "version": "5.5.2",
     "description": "A New Tool for Reading JavaScript Code in 2017",
     "main": "lv.js",
     "bin": {
@@ -28,9 +28,9 @@
         "async": "^2.1.4",
         "chalk": "^1.1.3",
         "commander": "^2.9.0",
-        "fmtjs": "5.5.1",
-        "fmtjs-loader": "5.5.1",
-        "fmtjs-web": "5.5.1",
+        "fmtjs": "5.5.2",
+        "fmtjs-loader": "5.5.2",
+        "fmtjs-web": "5.5.2",
         "open": "^0.0.5",
         "request": "^2.75.0"
     }
