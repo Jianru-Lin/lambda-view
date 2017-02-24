@@ -102,15 +102,18 @@ function compile(target, cb) {
 		function (err, res) {
 			if (err) {
 				log.error(err.message)
+				cb(err)
 				return
 			}
 			else if (!res.ok) {
 				log.error(res.error)
+				cb(new Error(res.error))
 				return
 			}
 
 			log.info('done, see ' + res.result.url)
 			helper.open_html_file(res.result.url)
+			cb(null)
 		}
 	)
 }
