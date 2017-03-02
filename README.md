@@ -2,6 +2,16 @@
 
 lambda-view provides you a better way to READ JavaScript source code. 
 
+# What's the difference?
+
+lambda-view is not something like sublime text/atom or what else editor that you have ever seen before:
+
+* It is not a text editor, but a reader (for JavaScript)
+* It understands the grammar of JavaScript, operating on the AST level, not just a simple token level highlighter
+* It transforms and reproduces the source code as needed
+* It is highly optimized for reading, which brings some special layouts and design
+* You can read on ipad (a comfortable way), not only computer
+
 # Screenshots & Demos
 
 ![](screenshots/lambda-view-demo.js.png)
@@ -87,7 +97,7 @@ Or some Node.js modules source code here:
 * [internal/streams/BufferList](http://demo.lambda-view.com/lv.html?package=internal/streams/BufferList)
 * [internal/streams/lazy_transform](http://demo.lambda-view.com/lv.html?package=internal/streams/lazy_transform)
 
-# You can read any other JavaScript project
+# Read any JavaScript file you'd like to!
 
 You are not limited to the demos! Just install lambda-view then read any JavaScript file you'd like to!
 
