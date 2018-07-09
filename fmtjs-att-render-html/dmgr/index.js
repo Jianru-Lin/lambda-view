@@ -1,5 +1,5 @@
 var assert = require('assert')
-var web_ditem = require('../fmtjs-web/ditem/')
+var web_ditem = require('../../fmtjs-web/ditem/')
 
 exports.save = function(data) {
 	assert(data)

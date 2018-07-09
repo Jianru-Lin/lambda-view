@@ -1,4 +1,4 @@
-var pass = require('../fmtjs-att-pass')
+var pass = require('../../fmtjs-att-pass')
 
 function translate(ast) {
 	var ctx = pass(ast)

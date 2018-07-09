@@ -1,4 +1,4 @@
-var walk = require('fmtjs-ast-walker').walk
+var walk = require('../../fmtjs-ast-walker').walk
 
 function mark_fmtjs_id(ast) {
 	var next_id = 0

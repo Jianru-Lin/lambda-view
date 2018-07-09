@@ -1,6 +1,6 @@
-var pass_id = require('../fmtjs-att-pass-id')
-var pass_flat = require('../fmtjs-att-pass-flat')
-// var pass_lexical = require('../fmtjs-att-pass-lexical')
+var pass_id = require('../../fmtjs-att-pass-id')
+var pass_flat = require('../../fmtjs-att-pass-flat')
+// var pass_lexical = require('../../fmtjs-att-pass-lexical')
 
 function run(ast) {
 	var ctx = {}

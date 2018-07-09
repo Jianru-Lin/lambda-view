@@ -1,6 +1,6 @@
 var assert = require('assert')
-var walk_type = require('fmtjs-ast-walker').walk_type
-var walk = require('fmtjs-ast-walker').walk
+var walk_type = require('../../fmtjs-ast-walker').walk_type
+var walk = require('../../fmtjs-ast-walker').walk
 
 function flat(ast) {
 	// copy ast...

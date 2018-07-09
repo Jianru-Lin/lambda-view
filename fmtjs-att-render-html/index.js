@@ -1,5 +1,5 @@
 var assert = require('assert')
-var pkg = require('./package.json')
+var pkg = require('../package.json')
 var dmgr = require('./dmgr')
 
 module.exports = render
