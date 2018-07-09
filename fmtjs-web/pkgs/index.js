@@ -1,0 +1,5 @@
+exports.install = require('./api/install')
+exports.uninstall = require('./api/uninstall')
+exports.is_installed = require('./api/is_installed')
+exports.resolve = require('./api/resolve')
+exports.list = require('./api/list')

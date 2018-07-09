@@ -1,0 +1,1 @@
+export default class S extends V {}

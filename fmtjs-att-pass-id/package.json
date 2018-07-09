@@ -1,0 +1,20 @@
+{
+    "name": "fmtjs-att-pass-id",
+    "version": "5.8.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "./node_modules/mocha/bin/mocha",
+        "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    },
+    "author": "Jianru Lin",
+    "license": "MIT",
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "fmtjs-demo": "^1.0.0",
+        "mocha": "^3.1.2"
+    },
+    "dependencies": {
+        "fmtjs-ast-walker": "5.8.0"
+    }
+}

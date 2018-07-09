@@ -1,0 +1,138 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New","Microsoft YaHei",monospace;
+	font-size: 18px;
+	background: #2D2D2D;
+}
+
+body {
+	padding-top: 3em;
+	padding-bottom: 2em;
+}
+
+a,
+a:hover,
+a:active,
+a:visited {
+	color: inherit;
+}
+
+button {
+	padding: 0.5em 1em;
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+button:focus {
+	outline: none;
+}
+
+#title {
+    margin-top: 1em;
+    color: white;
+    padding-bottom: 0;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#title h1 {
+	margin: 0;
+	text-shadow: 1px 1px black;
+	color: hsl(37, 100%, 71%);
+}
+
+#title .package {
+	margin-bottom: 9px;
+    margin-top: 9px;
+    color: hsl(37, 100%, 71%);
+    font-size: 75%;
+}
+
+#content {
+	white-space: pre;
+	background: whitesmoke;
+	color: #171717;
+	color: #CCCCCC;
+	background: #2D2D2D;
+	padding: 1em;
+}
+
+#content {
+	-webkit-tap-highlight-color: transparent;
+}
+
+#content > span, #content > div {
+z-indexwebkit-tap-highlight-color: black;
+}
+
+#control {
+	display: flex;
+    align-items: center;
+    background: hsla(0,0%,15%,1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    padding: 0.5em 1em;
+    border-bottom: solid 1px hsla(180,0%,40%,1);
+    cursor: default;
+}
+
+#control .logo {
+	flex-grow: 1;
+    color: hsl(37, 100%, 71%);
+}
+
+#control .logo a {
+	text-decoration: none;
+}
+
+#control .logo a:hover {
+	text-decoration: underline;
+}
+
+#control .logo .version {
+	font-size: 0.5em;
+    color: #7b7b7b;
+}
+
+#control .logo a:hover .version {
+	color: inherit;
+}
+
+#control .buttons {
+	display: flex;
+    border: solid 1px #666666;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#control button {
+	background: transparent;
+    color: white;
+    font-size: 0.75em;
+}
+
+#control button:first-child {
+	border-right: solid 1px #666666;
+}
+
+#control button#exp-all,
+#control button#col-all {
+	min-width: 8em;
+}
+
+#control button:hover,
+#control button:active {
+    background: hsla(0,0%,20%,1);
+    color: #ffc76b;
+    text-shadow: 1px 1px #000000;
+}
+
+#control button:active {
+	box-shadow: inset 0 0 10px #050e0e;
+}

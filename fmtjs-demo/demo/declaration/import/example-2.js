@@ -1,0 +1,1 @@
+import * as m from "a.js"

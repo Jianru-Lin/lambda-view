@@ -1,0 +1,349 @@
+::selection {
+    background: yellow;
+    color: black;
+    text-shadow: 1px 1px white;
+}
+
+#content span {
+	display: inline-block;
+}
+
+#content div:not(:last-child) {
+	margin-bottom: 1.5em;
+}
+
+.collapsable {
+	vertical-align: top;
+}
+
+.lexical-env {
+	outline: solid 1px yellow;
+}
+/*
+.Program {
+	padding: 1em;
+	overflow: auto;
+}*/
+
+/* 暂时不显示 BlockStatement 的注释，因为布局需要修正 */
+.BlockStatement > .comment {
+    display: none;
+}
+
+pre.comment {
+	margin: 0;
+	margin-bottom: 1.5em;
+    color: #aaa;
+    transition: color 1s;
+    padding: 1em;
+    background: #3c3c3c;
+    border-radius: 4px;
+    line-height: 1.5em;
+    text-shadow: 1px 1px black;
+}
+
+pre.comment:hover {
+	color: #eee;
+}
+
+pre.comment ::selection {
+	text-shadow: none;
+	text-shadow: 1px 1px white;
+}
+
+a.pkg-ref .Literal.string {
+	border-bottom: solid 1px;
+}
+
+a.pkg-ref.invalid .Literal.string {
+	color: #aaa;
+}
+
+.FunctionExpression > .body,
+.FunctionDeclaration > .body {
+	vertical-align: top;
+}
+
+.SwitchStatement .cases {
+	vertical-align: top;
+}
+
+.SwitchCase > .consequent {
+	vertical-align: top;
+}
+
+.ConditionalExpression {
+    vertical-align: top;
+}
+
+.ConditionalExpression > .test {
+	vertical-align: top;
+}
+
+.VariableDeclaration > .declarations {
+	vertical-align: top;
+}
+
+.TemplateLiteral > span {
+	vertical-align: top;
+}
+
+.ObjectExpression > .properties > .collapsable,
+.ObjectPattern > .properties > .collapsable {
+	margin-top: -1em;
+    background: rgba(58, 98, 113, 0.2);
+    vertical-align: top;
+    padding: 1em;
+    border-radius: 4px;
+}
+
+.BlockStatement > .body > .collapsable:empty,
+.BlockStatement > .body > .collapsable:empty + .collapsable-switcher,
+.ArrayExpression > .elements > .collapsable:empty,
+.ArrayExpression > .elements > .collapsable:empty + .collapsable-switcher,
+.ArrayPattern > .elements > .collapsable:empty,
+.ArrayPattern > .elements > .collapsable:empty + .collapsable-switcher,
+.ObjectExpression > .properties > .collapsable:empty,
+.ObjectExpression > .properties > .collapsable:empty + .collapsable-switcher,
+.ObjectPattern > .properties > .collapsable:empty,
+.ObjectPattern > .properties > .collapsable:empty + .collapsable-switcher {
+	display: none !important; /* 空对象不显示 */
+}
+
+.area, 
+.ConditionalExpression,
+.ClassDeclaration > .collapsable,
+.ClassExpression > .collapsable,
+.SwitchStatement > .collapsable,
+.BlockStatement > .body > .collapsable,
+.ArrayExpression.vertical-layout > .elements > .collapsable,
+.ArrayPattern.vertical-layout > .elements > .collapsable {
+	/*outline: solid 1px rgba(197, 197, 197, 0.2);*/
+	border-radius: 4px;
+	margin-top: -1em;
+    background: rgba(162, 162, 162, 0.05);
+    vertical-align: top;
+    padding: 1em;
+}
+
+.CallExpression > .callee > .Identifier ,
+.FunctionExpression > .name > .Identifier,
+.FunctionDeclaration > .id > .Identifier {
+	color: #6699CC !important;
+}
+
+/*对象中嵌套函数的时候，把色彩重置一下*/
+
+.ObjectExpression .BlockStatement > .body > .collapsable {
+	background: #393939;
+}
+
+.ObjectExpression .BlockStatement .BlockStatement > .body > .collapsable {
+	background: rgba(162, 162, 162, 0.05);
+}
+
+.ObjectExpression .Property > .key > .Identifier,
+.ExportSpecifier > .exported > .Identifier {
+	color: #CCCCCC;
+}
+
+.collapsable-switcher {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.25);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 8px;
+    vertical-align: top;
+    padding: 4px;
+    margin: 0 2px;
+}
+
+.collapsable-switcher:hover {
+	color: white !important;
+    background: #ff8888 !important;
+}
+
+.collapsable-switcher.hidden {
+	display: none !important;
+}
+
+/* 用于支持水平布局模式和垂直布局模式间切换 */
+
+#content .SequenceExpression > .expressions > .operator,
+#content .VariableDeclaration > .declarations > .comma,
+#content .ObjectExpression > .properties > .collapsable.bracket > .comma,
+#content .ArrayExpression > .elements > .collapsable.square-bracket > .comma,
+#content .ArrayPattern > .elements > .collapsable.square-bracket > .comma,
+#content .FunctionExpression > .params > .collapsable > .comma,
+#content .FunctionDeclaration > .params > .collapsable > .comma,
+#content .ArrowFunctionExpression > .params > .collapsable > .comma,
+#content .CallExpression > .arguments > .collapsable > .comma,
+#content .NewExpression > .arguments > .collapsable > .comma {
+	cursor: pointer;
+}
+
+#content .SequenceExpression.vertical-layout > .expressions > .sp,
+#content .VariableDeclaration.vertical-layout > .declarations > .sp,
+#content .ObjectExpression > .properties > .collapsable.bracket.vertical-layout > .sp,
+#content .ArrayExpression.vertical-layout > .elements > .collapsable.square-bracket > .sp,
+#content .ArrayPattern.vertical-layout > .elements > .collapsable.square-bracket > .sp,
+#content .FunctionExpression > .params > .collapsable.vertical-layout > .sp,
+#content .FunctionDeclaration > .params > .collapsable.vertical-layout > .sp,
+#content .ArrowFunctionExpression > .params > .collapsable.vertical-layout > .sp,
+#content .CallExpression > .arguments > .collapsable.vertical-layout > .sp,
+#content .NewExpression > .arguments > .collapsable.vertical-layout > .sp {
+    display: block;
+}
+
+#content .IfStatement.vertical-layout > .part {
+	display: block;
+	margin-bottom: 1.5em;
+}
+
+/* Syntax Highlight */
+
+.keyword {
+	color: #CC99CC;
+}
+
+.keyword:hover {
+	background: #515151;
+}
+
+.identifier {
+	color: #F2777A;
+}
+
+.identifier:hover {
+	background: #515151;
+}
+
+/* 用于实现高亮相同的标识符功能 */
+.Identifier.highlight {
+	outline: solid 1px yellow;
+}
+
+/*.MemberExpression:hover > .property > .Identifier {
+    color: #e0d09e;
+}
+*/
+/*.MemberExpression > .property > .left-coll.square-bracket,
+.MemberExpression > .property > .right-coll.square-bracket,*/
+.operator {
+	color: #66CCCC;
+}
+
+/*.MemberExpression > .property > .left-coll.square-bracket:hover,
+.MemberExpression > .property > .right-coll.square-bracket:hover,*/
+.operator:hover {
+	background: #515151;
+}
+
+.Literal,
+.TemplateLiteral {
+	color: rgb(153,204,153);
+	cursor: pointer;
+}
+
+.Literal:hover,
+.TemplateLiteral:hover {
+    background: #515151;
+}
+
+.Literal.string {
+	color: rgb(153,204,153);
+}
+
+/* 数值类型的字面量默认显示原始值（保留进制） */
+
+#content .Literal.number .value {
+	display: none;
+}
+
+/*#content .Literal.number:hover .value {
+	display: block;
+	position: absolute;
+    background: #515151;
+}
+*/
+
+.template-expression > .prefix,
+.template-expression > .postfix {
+	color: rgba(199, 199, 199, 0.3);
+}
+
+.comma,
+.colon,
+.exp-brace > .left-coll,
+.exp-brace > .right-coll,
+.dot,
+.semicolon {
+	color: rgba(199, 199, 199, 0.3);
+}
+
+#content .exp-brace.unnecessary > .left-coll,
+#content .exp-brace.unnecessary > .right-coll,
+#content .exp-brace.unnecessary > .collapsable-switcher {
+	display: none;
+}
+
+.dot {
+	color: #CCCCCC;
+}
+
+.exp-brace:not(.brace) {
+	color: #c7c7c7;
+}
+
+.left-coll.hover, 
+.right-coll.hover {
+	background: #515151;
+	color: white;
+	cursor: pointer;
+}
+
+.collapsable.hover {
+	background: #515151 !important;
+}
+
+.collapsable.hidden {
+	display: none !important;
+}
+
+/* 操作符高亮实现 */
+
+#content .BinaryExpression.highlight-operator > .left,
+#content .BinaryExpression.highlight-operator > .right,
+#content .LogicalExpression.highlight-operator > .left,
+#content .LogicalExpression.highlight-operator > .right,
+#content .UnaryExpression.highlight-operator > .argument,
+#content .UpdateExpression.highlight-operator > .argument,
+#content .SequenceExpression.highlight-operator > .expressions > .expression,
+#content .MemberExpression.highlight-operator > .object,
+#content .MemberExpression.highlight-operator > .property {
+	outline: solid 1px #515151;
+}
+
+/* 元素索引标记 */
+
+#content .ArrayExpression:not(.vertical-layout) .index-tag {
+	display: none;
+}
+
+#content .index-tag {
+	display: inline-block;
+	min-width: 1em;
+	height: 1em;
+	opacity: 0.5;
+	margin-right: 0.5em;
+	border: solid 1px;
+	padding: 0 2px;
+	border-radius: 2px;
+    text-align: center;
+    line-height: 1em;
+    transition: opacity 1s;
+}
+
+#content .index-tag:hover {
+	opacity: 1;
+}

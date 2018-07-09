@@ -1,0 +1,17 @@
+{
+    "name": "fmtjs-att",
+    "version": "5.9.0",
+    "description": "Abstract text tree for fmtjs.",
+    "main": "index.js",
+    "scripts": {
+        "test": "./node_modules/mocha/bin/mocha",
+        "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    },
+    "author": "Jianru Lin",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "mocha": "^3.1.2"
+    }
+}

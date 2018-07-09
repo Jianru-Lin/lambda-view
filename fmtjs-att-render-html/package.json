@@ -1,0 +1,11 @@
+{
+    "name": "fmtjs-att-render-html",
+    "version": "5.8.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Jianru Lin",
+    "license": "MIT"
+}

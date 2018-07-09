@@ -15,7 +15,7 @@ program
 			background: this.background,
 			public: this.public
 		}
-		require('fmtjs-web').start(opt, function(err, status) {
+		require('./fmtjs-web').start(opt, function(err, status) {
 			if (err) {
 				console.error(err.message)
 				return
@@ -29,7 +29,7 @@ program
 	.description('stop lambda-view web server')
 	.action(function() {
 		console.log('stopping lambda-view web server...')
-		require('fmtjs-web').stop(function(err) {
+		require('./fmtjs-web').stop(function(err) {
 			if (err) {
 				console.error(err.message)
 				return
@@ -43,7 +43,7 @@ program
 	.description('retrieve lambda-view web server status')
 	.action(function() {
 		console.log('retrieving lambda-view web server status...')
-		require('fmtjs-web').status(function(err, status) {
+		require('./fmtjs-web').status(function(err, status) {
 			if (err) {
 				console.error(err.message)
 				return

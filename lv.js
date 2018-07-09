@@ -4,8 +4,7 @@ var assert = require('assert')
 var path = require('path')
 var program = require('commander')
 var async = require('async')
-var fmtjs = require('fmtjs')
-var fmtjs_web = require('fmtjs-web')
+var fmtjs_web = require('./fmtjs-web')
 var log = helper.log
 
 var g = {
@@ -77,7 +76,7 @@ function start_web_server(cb) {
 }
 
 function is_web_server_started(yes_cb, no_cb) {
-	var web = require('fmtjs-web')
+	var web = require('../fmtjs-web')
 	web.status(function(err, status) {
 		if (err) {
 			no_cb()

@@ -1,7 +1,7 @@
 var fs = require('fs')
 var path = require('path')
 var chalk = require('chalk')
-var loader = require('fmtjs-loader')
+var loader = require('./fmtjs-loader')
 var open = require('open')
 
 function load_utf8_file(filename, cb) {
