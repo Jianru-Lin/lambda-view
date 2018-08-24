@@ -1,2 +1,101 @@
 /* some style */
 
+.keyword {
+    color: black;
+}
+
+.white-space {
+    white-space: pre;
+}
+
+.return-statement {
+    display: flex;
+}
+
+.block-statement {
+    display: flex;
+}
+
+.throw-statement {
+    display: flex;
+}
+
+.while-statement {
+    display: flex;
+}
+
+.do-while-statement {
+    display: flex;
+}
+
+.if-statement {
+    display: flex;
+}
+
+.import-declaration {
+    display: flex;
+}
+
+.function-declaration {
+    display: flex;
+}
+
+.import-specifier {
+    display: flex;
+}
+
+.import-namespace-specifier {
+    display: flex;
+}
+
+.export-default-declaration {
+    display: flex;
+}
+
+.try-statement {
+    display: flex;
+}
+
+.catch-clause {
+    display: flex;
+}
+
+.with-statement {
+    display: flex;
+}
+
+.variable-declaration {
+    display: flex;
+}
+
+.variable-declarator {
+    display: flex;
+}
+
+.for-statement {
+    display: flex;
+}
+
+.for-of-statement {
+    display: flex;
+}
+
+.class-declaration {
+    display: flex;
+}
+
+.class-body {
+    display: flex;
+}
+
+.method-definition {
+    display: flex;
+}
+
+.switch-statement {
+    display: flex;
+}
+
+.switch-case .test {
+    display: flex;
+}
