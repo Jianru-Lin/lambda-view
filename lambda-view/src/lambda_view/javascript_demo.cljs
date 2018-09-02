@@ -70,4 +70,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current switch-statement)
+(swap! state assoc :current for-statement)

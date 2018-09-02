@@ -184,7 +184,8 @@
 
 ;; ExpressionStatement
 (defn expression-statement-render [node]
-  (let [expression (get node "expression")]
+  (let [expression (get node "expression")
+        directive (get node "directive")]
     [:div {:class "expression-statement"} (render-node expression)]))
 
 ;; ThrowStatement

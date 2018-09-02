@@ -99,3 +99,20 @@
 .switch-case .test {
     display: flex;
 }
+
+/* Color Theme */
+
+.lambda-view {
+    background: #2D2D2D;
+    font-family: Menlo,Monaco,Consolas,"Andale Mono","lucida console","Courier New","Microsoft YaHei",monospace;
+    color: #CCCCCC;
+    padding: 1em;
+
+    /* Vertical Rhythms */
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.keyword {
+    color: #CC99CC;
+}

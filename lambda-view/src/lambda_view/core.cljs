@@ -57,7 +57,7 @@
 (defn ast-render []
   [:div
    [:h1 "AST-Render"]
-   [js-lang/ast-render (:ast @app-state)]])
+   [:div.lambda-view [js-lang/ast-render (:ast @app-state)]]])
 
 (defn hello-world []
   [:div
