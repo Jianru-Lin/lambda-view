@@ -1,4 +1,4 @@
-/* some style */
+/* Basic Element Style */
 
 .keyword {
     color: black;
@@ -8,36 +8,13 @@
     white-space: pre;
 }
 
-.return-statement {
+.statement,
+.declaration {
     display: flex;
 }
 
-.block-statement {
-    display: flex;
-}
-
-.throw-statement {
-    display: flex;
-}
-
-.while-statement {
-    display: flex;
-}
-
-.do-while-statement {
-    display: flex;
-}
-
-.if-statement {
-    display: flex;
-}
-
-.import-declaration {
-    display: flex;
-}
-
-.function-declaration {
-    display: flex;
+.expression > div:not(.white-space) {
+    display: inline-flex;
 }
 
 .import-specifier {
@@ -48,39 +25,11 @@
     display: flex;
 }
 
-.export-default-declaration {
-    display: flex;
-}
-
-.try-statement {
-    display: flex;
-}
-
 .catch-clause {
     display: flex;
 }
 
-.with-statement {
-    display: flex;
-}
-
-.variable-declaration {
-    display: flex;
-}
-
 .variable-declarator {
-    display: flex;
-}
-
-.for-statement {
-    display: flex;
-}
-
-.for-of-statement {
-    display: flex;
-}
-
-.class-declaration {
     display: flex;
 }
 
@@ -92,12 +41,82 @@
     display: flex;
 }
 
-.switch-statement {
+.switch-case .test {
     display: flex;
 }
 
-.switch-case .test {
+/* Pair */
+
+.pair {
+    align-items: baseline;
+}
+
+/* Collapse/Uncollapse */
+
+.collapsed {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.25);
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* Collapse/Uncollapse - Hover Transition */
+
+.collapsed, .block {
+    transition: all .15s;
+}
+
+.pair.left,
+.pair.right {
+    transition: all .15s;
+}
+
+.pair.left.hover,
+.pair.right.hover,
+.collapsed:hover {
+    color: white;
+    background: #ff8888;
+}
+
+.pair.left,
+.pair.right {
+    cursor: pointer;
+}
+
+/* Horizontal/Vertical Layout */
+
+.block {
     display: flex;
+    border-radius: 4px;
+    background: rgba(162, 162, 162, 0.05);
+    vertical-align: top;
+    padding: 1em;
+}
+
+.block.horizontal {
+    flex-direction: row;
+}
+
+.block.vertical {
+    flex-direction: column;
+}
+
+.block > .block-element {
+    display: flex;
+}
+
+.array.expression {
+    align-items: baseline;
+}
+
+.toggle-layout {
+    cursor: pointer;
+    transition: all .15s;
+}
+
+.toggle-layout:hover {
+    color: #ff8888;
 }
 
 /* Color Theme */
@@ -115,4 +134,26 @@
 
 .keyword {
     color: #CC99CC;
+}
+
+.identifier {
+    color: #F2777A;
+}
+
+.literal {
+    color: rgb(153,204,153);
+}
+
+/* Color Theme - Hover Transition */
+
+.keyword,
+.literal,
+.identifier {
+    transition: all .15s;
+}
+
+.keyword:hover,
+.literal:hover,
+.identifier:hover {
+    background: #515151;
 }

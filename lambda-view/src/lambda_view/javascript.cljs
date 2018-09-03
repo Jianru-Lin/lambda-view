@@ -2,7 +2,22 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript
-  (:require [lambda-view.utils :as utils]))
+  (:require [lambda-view.utils :as utils]
+            [reagent.core :as reagent])
+  (:use [lambda-view.common :only [js-keyword
+                                   white-space
+                                   comma
+                                   colon
+                                   equal
+                                   semicolon
+                                   asterisk
+                                   white-space-optional
+                                   pair
+                                   brackets
+                                   parenthese
+                                   braces
+                                   block
+                                   collapsed]]))
 
 (declare type-render)
 
@@ -19,82 +34,48 @@
                                 (if (nil? render) node-render-not-found render))))
 
 (defn render-node [node]
-  ((render-for-node node) node))
+  [(render-for-node node) node])
 
 (defn render-node-coll [nodes]
   (map render-node nodes))
 
-(defn js-keyword [text]
-  [:div.keyword text])
-
-(defn white-space []
-  [:div.white-space " "])
-
-(defn comma []
-  [:div.comma ","])
-
-(defn colon []
-  [:div.colon ":"])
-
-(defn equal []
-  [:div.equal "="])
-
-(defn semicolon []
-  [:div.semicolon ";"])
-
-(defn asterisk []
-  [:div.asterisk "*"])
-
-(defn white-space-optional []
-  [:div.white-space.optional " "])
-
-;(defn pair [left content right]
-;  [:div.pair
-;   [:div.left left] content [:div.right right]])
-
-(defn parenthese [content]
-  (list [:div.parenthese.left "("] content [:div.parenthese.right ")"]))
-
-(defn braces [content]
-  (list [:div.brace.left "{"] content [:div.brace.right "}"]))
-
 ;; EmptyStatement
 (defn empty-statement-render [_node]
-  [:div {:class "empty-statement"} ";"])
+  [:div {:class "empty statement"} ";"])
 
 ;; DebuggerStatement
 (defn debugger-statement-render [_node]
-  [:div {:class "debugger-statement"} "debugger"])
+  [:div {:class "debugger statement"} "debugger"])
 
 ;; ReturnStatement
 (defn return-statement-render [node]
   (let [argument (get node "argument")]
     (if (nil? argument)
-      [:div {:class "return-statement"} (js-keyword "return")]
-      [:div {:class "return-statement"} (js-keyword "return") (white-space) (render-node argument)])))
+      [:div {:class "return statement"} (js-keyword "return")]
+      [:div {:class "return statement"} (js-keyword "return") (white-space) (render-node argument)])))
 
 ;; BlockStatement
 (defn block-statement-render [node]
-  [:div {:class "block-statement"}
+  [:div {:class "block statement"}
    [:div "{"]
    (white-space-optional)
-   [:div (for [body (get node "body")] ((render-for-node body) body))]
+   [:div (for [body (get node "body")] (render-node body))]
    (white-space-optional)
    [:div "}"]])
 
 ;; BreakStatement
 (defn break-statement-render [_node]
-  [:div {:class "break-statement"} "break"])
+  [:div {:class "break statement"} "break"])
 
 ;; ContinueStatement
 (defn continue-statement-render [_node]
-  [:div {:class "continue-statement"} "continue"])
+  [:div {:class "continue statement"} "continue"])
 
 ;; LabeledStatement
 (defn labeled-statement-render [node]
   (let [label (get node "label")
         body (get node "body")]
-    [:div {:class "labeled-statement"}
+    [:div {:class "labeled statement"}
      [:div {:class "label"} (render-node label)]
      (colon)
      (white-space-optional)
@@ -104,7 +85,7 @@
 (defn import-declaration-render [node]
   (let [specifiers (get node "specifiers")
         source (get node "source")]
-    [:div {:class "import-declaration"}
+    [:div {:class "import declaration"}
      (js-keyword "import")
      (if (> (count specifiers) 0) (list (white-space)
                                         ;; see reference https://www.ecma-international.org/ecma-262/9.0/index.html#prod-ImportClause
@@ -155,12 +136,12 @@
      (render-node source)]))
 
 ;; ImportDefaultSpecifier
-(defn import-default-specifier [node]
+(defn import-default-specifier-render [node]
   [:div {:class "import-default-specifier"}
    (render-node (get node "local"))])
 
 ;; ImportSpecifier
-(defn import-specifier [node]
+(defn import-specifier-render [node]
   [:div {:class "import-specifier"}
    (let [imported (get node "imported")
          local (get node "local")]
@@ -173,39 +154,39 @@
                               (render-node local))))])
 
 ;; ImportNamespaceSpecifier
-(defn import-namespace-specifier [node]
+(defn import-namespace-specifier-render [node]
   [:div {:class "import-namespace-specifier"}
    "*" (white-space) (js-keyword "as") (white-space) (render-node (get node "local"))])
 
 ;; ExportDefaultDeclaration
-(defn export-default-declaration [node]
-  [:div {:class "export-default-declaration"}
+(defn export-default-declaration-render [node]
+  [:div {:class "export-default declaration"}
    (js-keyword "export") (white-space) (js-keyword "default") (white-space) (render-node (get node "declaration"))])
 
 ;; ExpressionStatement
 (defn expression-statement-render [node]
   (let [expression (get node "expression")
         directive (get node "directive")]
-    [:div {:class "expression-statement"} (render-node expression)]))
+    [:div {:class "expression statement"} (render-node expression)]))
 
 ;; ThrowStatement
 (defn throw-statement-render [node]
   (let [argument (get node "argument")]
-    [:div {:class "throw-statement"}
+    [:div {:class "throw statement"}
      (js-keyword "throw") (white-space) (render-node argument)]))
 
 ;; WhileStatement
 (defn while-statement-render [node]
   (let [test (get node "test")
         body (get node "body")]
-    [:div {:class "while-statement"}
-     (js-keyword "while") (white-space-optional) "(" ((render-for-node test) test) ")" (white-space-optional) ((render-for-node body) body)]))
+    [:div {:class "while statement"}
+     (js-keyword "while") (white-space-optional) "(" (render-node test) ")" (white-space-optional) ((render-for-node body) body)]))
 
 ;; DoWhileStatement
 (defn do-while-statement-render [node]
   (let [body (get node "body")
         test (get node "test")]
-    [:div {:class "do-while-statement"}
+    [:div {:class "do-while statement"}
      (js-keyword "do") (white-space-optional) (render-node body) (white-space-optional) (js-keyword "while") (white-space-optional) "(" (render-node test) ")"]))
 
 ;; IfStatement
@@ -213,7 +194,7 @@
   (let [test (get node "test")
         consequent (get node "consequent")
         alternate (get node "alternate")]
-    [:div {:class "if-statement"}
+    [:div {:class "if statement"}
      (js-keyword "if") (white-space-optional) "(" (render-node test) ")" (white-space-optional)
      (render-node consequent)
      (if (nil? alternate)
@@ -225,13 +206,13 @@
   (let [block (get node "block")
         handler (get node "handler")
         finalizer (get node "finalizer")]
-    [:div {:class "try-statement"}
+    [:div {:class "try statement"}
      (js-keyword "try") (white-space-optional) (render-node block)
      (if-not (nil? handler) (list (white-space-optional) (render-node handler)))
      (if-not (nil? finalizer) (list (white-space-optional) (js-keyword "finally") (white-space-optional) (render-node finalizer)))]))
 
 ;; CatchClause
-(defn catch-clause [node]
+(defn catch-clause-render [node]
   (let [param (get node "param")
         body (get node "body")]
     [:div {:class "catch-clause"}
@@ -241,10 +222,10 @@
      (render-node body)]))
 
 ;; WithStatement
-(defn with-statement [node]
+(defn with-statement-render [node]
   (let [object (get node "object")
         body (get node "body")]
-    [:div {:class "with-statement"}
+    [:div {:class "with statement"}
      (js-keyword "with")
      (white-space-optional)
      (parenthese (render-node object))
@@ -252,16 +233,16 @@
      (render-node body)]))
 
 ;; VariableDeclaration
-(defn variable-declaration [node]
+(defn variable-declaration-render [node]
   (let [kind (get node "kind")
         declarations (get node "declarations")]
-    [:div {:class "variable-declaration"}
+    [:div {:class "variable declaration"}
      (js-keyword kind)
      (white-space)
      (utils/join (render-node-coll declarations) (list (comma) (white-space-optional)))]))
 
 ;; VariableDeclarator
-(defn variable-declarator [node]
+(defn variable-declarator-render [node]
   (let [id (get node "id")
         init (get node "init")]
     [:div {:class "variable-declarator"}
@@ -272,12 +253,12 @@
                                (render-node init)))]))
 
 ;; ForStatement
-(defn for-statement [node]
+(defn for-statement-render [node]
   (let [init (get node "init")
         test (get node "test")
         update (get node "update")
         body (get node "body")]
-    [:div {:class "for-statement"}
+    [:div {:class "for statement"}
      (js-keyword "for")
      (white-space-optional)
      (parenthese (list (render-node init)
@@ -289,11 +270,11 @@
      (render-node body)]))
 
 ;; ForOfStatement
-(defn for-of-statement [node]
+(defn for-of-statement-render [node]
   (let [left (get node "left")
         right (get node "right")
         body (get node "body")]
-    [:div {:class "for-of-statement"}
+    [:div {:class "for-of statement"}
      (js-keyword "for")
      (white-space-optional)
      (parenthese (list (render-node left)
@@ -303,7 +284,7 @@
      (render-node body)]))
 
 ;; FunctionDeclaration
-(defn function-declaration [node]
+(defn function-declaration-render [node]
   (let [generator (get node "generator")
         ;; [NOTE]
         ;; expression flag is such an old thing which is not supported anymore
@@ -314,7 +295,7 @@
         id (get node "id")
         params (get node "params")
         body (get node "body")]
-    [:div {:class "function-declaration"}
+    [:div {:class "function declaration"}
      (if async (list (js-keyword "async")
                      (white-space)))
      (js-keyword "function")
@@ -328,11 +309,11 @@
      (render-node body)]))
 
 ;; ClassDeclaration
-(defn class-declaration [node]
+(defn class-declaration-render [node]
   (let [id (get node "id")
         super-class (get node "superClass")
         body (get node "body")]
-    [:div {:class "class-declaration"}
+    [:div {:class "class declaration"}
      (js-keyword "class")
      (white-space)
      (render-node id)
@@ -383,7 +364,7 @@
 (defn switch-statement-render [node]
   (let [discriminant (get node "discriminant")
         cases (get node "cases")]
-    [:div {:class "switch-statement"}
+    [:div {:class "switch statement"}
      (js-keyword "switch")
      (white-space-optional)
      (parenthese (render-node discriminant))
@@ -396,11 +377,11 @@
         test (get node "test")]
     [:div {:class "switch-case"}
      [:div {:class "test"} (if (nil? test) (list (js-keyword "default")
-                                 (colon))
-                           (list (js-keyword "case")
-                                 (white-space)
-                                 (render-node test)
-                                 (colon)))]
+                                                 (colon))
+                                           (list (js-keyword "case")
+                                                 (white-space)
+                                                 (render-node test)
+                                                 (colon)))]
      [:div {:class "consequent"} (render-node-coll consequent)]]))
 
 ;; Identifier
@@ -416,7 +397,28 @@
   [:div
    {:class "program"}
    (let [body (get node "body")]
-     (if-not (nil? body) (for [child-node body] (render-node child-node))))])
+     (if-not (nil? body) (render-node-coll body)))])
+
+;; ArrayExpression
+(defn array-expression-render [node]
+  (let [state (reagent/atom {:layout   "horizontal"
+                             :collapse true})
+        toggle-layout (fn [] (swap! state assoc :layout (if (= "horizontal" (:layout @state)) "vertical" "horizontal")))
+        toggle-collapse (fn [] (swap! state assoc :collapse (not (:collapse @state))))]
+    (fn []
+      (let [elements (get node "elements")
+            tail-idx (- (count elements) 1)
+            is-collapsed (= true (:collapse @state))]
+        (println "array-expression-render" @state)
+        (println "is-collapsed" is-collapsed)
+        [:div.array.expression
+         (if (= 0 (count elements)) [brackets {:on-click toggle-collapse} nil]
+                                    [brackets {:on-click toggle-collapse} [collapsed {:state state} [block {:state state} (map-indexed (fn [idx e] [:div.block-element
+                                                                                                                        (render-node e)
+                                                                                                                        (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click toggle-layout} ","]
+                                                                                                                                                      (white-space-optional)))])
+                                                                                                           elements)]]])]))))
+
 
 ;; Map node type to render function
 (def type-render {"Program"                  program-render
@@ -433,25 +435,26 @@
                   "DoWhileStatement"         do-while-statement-render
                   "IfStatement"              if-statement-render
                   "ImportDeclaration"        import-declaration-render
-                  "ImportDefaultSpecifier"   import-default-specifier
-                  "ImportNamespaceSpecifier" import-namespace-specifier
-                  "ImportSpecifier"          import-specifier
-                  "ExportDefaultDeclaration" export-default-declaration
+                  "ImportDefaultSpecifier"   import-default-specifier-render
+                  "ImportNamespaceSpecifier" import-namespace-specifier-render
+                  "ImportSpecifier"          import-specifier-render
+                  "ExportDefaultDeclaration" export-default-declaration-render
                   "TryStatement"             try-statement-render
-                  "WithStatement"            with-statement
-                  "VariableDeclaration"      variable-declaration
-                  "VariableDeclarator"       variable-declarator
-                  "CatchClause"              catch-clause
-                  "ForStatement"             for-statement
-                  "ForOfStatement"           for-of-statement
-                  "FunctionDeclaration"      function-declaration
-                  "ClassDeclaration"         class-declaration
+                  "WithStatement"            with-statement-render
+                  "VariableDeclaration"      variable-declaration-render
+                  "VariableDeclarator"       variable-declarator-render
+                  "CatchClause"              catch-clause-render
+                  "ForStatement"             for-statement-render
+                  "ForOfStatement"           for-of-statement-render
+                  "FunctionDeclaration"      function-declaration-render
+                  "ClassDeclaration"         class-declaration-render
                   "ClassBody"                class-body-render
                   "MethodDefinition"         method-definition-render
                   "SwitchStatement"          switch-statement-render
                   "SwitchCase"               switch-case-render
+                  "ArrayExpression"          array-expression-render
                   "Identifier"               identifier-render
                   "Literal"                  literal-render})
 
 (defn ast-render [ast]
-  ((render-for-node ast) ast))
+  (render-node ast))

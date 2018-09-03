@@ -3,6 +3,14 @@
 (defn defdemo [& demos]
   (clojure.string/join "\n" demos))
 
+(def literal (defdemo "undefined;"
+                      "null;"
+                      "true;"
+                      "1.23e4;"
+                      "\"Hello World!\";"
+                      "[0,1,2];"
+                      "({key: value});"))
+
 (def import-declaration (clojure.string/join "\n" ["import a1 from 'm'"
                                                    "import * as m1 from 'm'"
                                                    "import {x1, y1} from 'm'"
@@ -70,4 +78,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current for-statement)
+(swap! state assoc :current literal)
