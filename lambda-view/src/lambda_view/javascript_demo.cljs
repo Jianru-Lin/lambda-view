@@ -11,9 +11,16 @@
                       "[0,1,2];"
                       "({key: value});"))
 
+(def array-expression (defdemo "[];"
+                               "[1];"
+                               "[1, 2];"
+                               "[1, 2, 3];"
+                               "[1, 2, 3, 4];"
+                               "[1, 2, 3, 4, 5];"
+                               "[1, 2, 3, 4, 5, 6];"))
+
 (def block-statement (defdemo "{}"
-                              ;"{label: statement}"
-                              ))
+                              "{label: statement}"))
 
 (def import-declaration (clojure.string/join "\n" ["import a1 from 'm'"
                                                    "import * as m1 from 'm'"
@@ -82,4 +89,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current block-statement)
+(swap! state assoc :current array-expression)

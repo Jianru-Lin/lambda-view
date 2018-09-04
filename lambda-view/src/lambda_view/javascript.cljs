@@ -27,7 +27,8 @@
                                   set-collapse!
                                   init-layout!
                                   get-layout
-                                  set-layout!]]))
+                                  set-layout!
+                                  toggle-layout!]]))
 
 (declare type-render)
 
@@ -412,20 +413,18 @@
 
 ;; ArrayExpression
 (defn array-expression-render [node]
-  (let [state (reagent/atom {:layout   "horizontal"
-                             :collapse true})
-        toggle-layout (fn [] (swap! state assoc :layout (if (= "horizontal" (:layout @state)) "vertical" "horizontal")))
-        toggle-collapse (fn [] (swap! state assoc :collapse (not (:collapse @state))))]
-    (fn []
-      (let [elements (get node "elements")
-            tail-idx (- (count elements) 1)]
-        [:div.array.expression
-         (if (= 0 (count elements)) [brackets {:on-click toggle-collapse} nil]
-                                    [brackets {:on-click toggle-collapse} [collapsable-box {:state state} (map-indexed (fn [idx e] [:div.box-element
-                                                                                                                                    (render-node e)
-                                                                                                                                    (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click toggle-layout} ","]
-                                                                                                                                                                  (white-space-optional)))])
-                                                                                                                       elements)]])]))))
+  (let [id (id-of node)
+        elements (get node "elements")
+        tail-idx (- (count elements) 1)]
+    (init-collapse! id true)
+    (init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
+    [:div.array.expression
+     [collapsable-box {:id   id
+                       :pair :bracket} (map-indexed (fn [idx e] [:div.box-element
+                                                                 (render-node e)
+                                                                 (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click #(toggle-layout! id)} ","]
+                                                                                               (white-space-optional)))])
+                                                    elements)]]))
 
 
 ;; Map node type to render function

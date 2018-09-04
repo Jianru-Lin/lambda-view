@@ -26,35 +26,23 @@
 (defn white-space-optional []
   [:div.white-space.optional " "])
 
+;; Pair Factory
 ;; [(pair "{" "}") content]
-;(defn pair [left right]
-;  (fn [attr content]
-;    (let [state (reagent/atom {:hover false})
-;          hover (fn [] (swap! state assoc :hover true))
-;          unhover (fn [] (swap! state assoc :hover false))
-;          on-click (:on-click attr)]
-;      (fn []
-;        (println "pair render")
-;        [:div.pair
-;         (if-not (nil? left) [:div {:class          (str "pair left " (if (:hover @state) "hover"))
-;                                    :on-mouse-enter hover
-;                                    :on-mouse-leave unhover
-;                                    :on-click       on-click} left])
-;         content
-;         (if-not (nil? right) [:div {:class          (str "pair right " (if (:hover @state) "hover"))
-;                                     :on-mouse-enter hover
-;                                     :on-mouse-leave unhover
-;                                     :on-click       on-click} right])]))))
-
 (defn pair [left right]
   (fn [attr content]
-    (let [on-click (:on-click attr)]
-      (fn []
-        (println "pair render")
-        [:div.pair
-         [:div.pair.left {:on-click on-click} left]
-         content
-         [:div.pair.right {:on-click on-click} right]]))))
+    (let [id (:id attr)
+          hover (if (state/get-hover id) "hover" nil)
+          on-click (:on-click attr)]
+      [:div.pair
+       [:div.pair.left {:class          hover
+                        :on-mouse-enter #(state/set-hover! id true)
+                        :on-mouse-leave #(state/set-hover! id false)
+                        :on-click       on-click} left]
+       content
+       [:div.pair.right {:class          hover
+                         :on-mouse-enter #(state/set-hover! id true)
+                         :on-mouse-leave #(state/set-hover! id false)
+                         :on-click       on-click} right]])))
 
 ;; TODO find all reference
 (def brackets (pair "[" "]"))
@@ -63,15 +51,7 @@
 (def parenthese (pair "(" ")"))
 
 ;; TODO find all reference
-;(def braces (pair "{" "}"))
-(defn braces [attr content]
-  (let [on-click (:on-click attr)]
-    (fn []
-      (println "brace pair render")
-      [:div.pair
-       [:div.pair.left {:on-click on-click} "{"]
-       content
-       [:div.pair.right {:on-click on-click} "}"]])))
+(def braces (pair "{" "}"))
 
 (defn box [attr content]
   (let [id (:id attr)
@@ -85,21 +65,18 @@
 (defn toggle-collapse [state]
   (fn [] (swap! state assoc :collapse (not (:collapse @state)))))
 
-(defn some-wrapper [attr content]
-  [braces attr content])
-
 (defn collapsable-box [attr content]
   (let [id (:id attr)
         collapse (state/get-collapse id)
         pair (:pair attr)
         pair-wrapper (cond
-                       (= pair :brace) some-wrapper
-                       (= pair :bracket) some-wrapper
-                       (= pair :parenthesis) some-wrapper
-                       true nil)]
-    (println "collapsable-box" "collapse" collapse)
-    (comment [pair-wrapper {:on-click (fn [] (state/toggle-collapse! id))} (if collapse [collapsed {:id id}]
-                                                                                        [box {:id id} content])])
-    [braces
-     {:on-click (fn [] (state/toggle-collapse! id))}
-     [:div "collapse=" (if collapse "true" "false")]]))
+                       (= pair :brace) braces
+                       (= pair :bracket) brackets
+                       (= pair :parenthesis) parenthese
+                       true nil)
+        on-click (fn [] (state/toggle-collapse! id))]
+    [pair-wrapper {:id       id
+                   :on-click on-click} (if (or (nil? content)
+                                               (= 0 (count content))) nil
+                                                                      (if collapse [collapsed {:id id}]
+                                                                                   [box {:id id} content]))]))

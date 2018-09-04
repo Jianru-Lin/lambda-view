@@ -1,6 +1,7 @@
 (ns lambda-view.tag)
 
 (defn gen-id-for [_node]
+  ;; TODO poor algorithm :(
   (str "r_" (.substring (.toString (js/Math.random)) 2)))
 
 (defn has-id [node]
