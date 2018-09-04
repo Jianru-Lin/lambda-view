@@ -72,18 +72,22 @@
            "async function *g2() {}"))
 
 (def class-declaration
-  (defdemo                                                  ;"class a1 {}"
+  (defdemo
+    ;"class a1 {}"
     ;"class a2 extends b2 {}"
-    ;"class a3 { constructor(a, b) {} }"
-    "class a4 { m1(a, b) {} async m2(a, b) {} * m3 (a, b) {} async * m4(a, b) {} }"
-    ;"class a5 { get m() {} }"
-    ;"class a6 { set m(v) {} }"
-    ;"class a7 { static m(a, b) {} }"
+    ;"class a3 { constructor(a, b) {1} }"
+    ;"class a4 { m1(a, b) {1} async m2(a, b) {2} * m3 (a, b) {3} async * m4(a, b) {4} }"
+    "class a5 { get m() {1} }"
+    "class a6 { static get m() {1} }"
+    "class a7 { set m(v) {1} }"
+    "class a8 { static set m(v) {1} }"
+    ;"class a9 { static m(a, b) {1} }"
     ))
 
 (def switch-statement
   (defdemo "switch(a) {}"
            "switch(a) {default: 1}"
+           "switch(a) {case \"a\": case \"b\": 1}"
            "switch(a) {case \"a\": 1; case \"b\": 2}"))
 
 (def while-statement
@@ -106,4 +110,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current for-of-statement)
+(swap! state assoc :current class-declaration)

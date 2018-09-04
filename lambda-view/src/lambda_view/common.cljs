@@ -73,10 +73,13 @@
                        (= pair :brace) braces
                        (= pair :bracket) brackets
                        (= pair :parenthesis) parenthese
-                       true nil)
+                       true parenthese)
         on-click (fn [] (state/toggle-collapse! id))]
     [pair-wrapper {:id       id
                    :on-click on-click} (if (or (nil? content)
                                                (= 0 (count content))) nil
                                                                       (if collapse [collapsed {:id id}]
                                                                                    [box {:id id} content]))]))
+
+(defn toggle-layout-element [id ele]
+  [:div.toggle-layout {:on-click #(state/toggle-layout! id)} ele])

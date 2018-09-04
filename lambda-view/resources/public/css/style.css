@@ -20,7 +20,8 @@
     white-space: pre;
 }
 
-.lambda-view .program {
+.lambda-view .program,
+.lambda-view .box {
     flex-direction: column;
 }
 

@@ -19,7 +19,8 @@
                                    box
                                    collapsed
                                    collapsable-box
-                                   toggle-collapse]]
+                                   toggle-collapse
+                                   toggle-layout-element]]
         [lambda-view.tag :only [mark-id!
                                 id-of]]
         [lambda-view.state :only [init-collapse!
@@ -50,6 +51,20 @@
 
 (defn render-node-coll [nodes]
   (map render-node nodes))
+
+(defn common-list [attr coll]
+  (if (nil? coll) nil
+                  (let [id (:id attr)
+                        sep (cond
+                              (= (:sep attr) :comma) (comma)
+                              true (comma))
+                        tail-idx (- (count coll) 1)]
+                    (init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
+                    (map-indexed (fn [idx e] [:div.box-element
+                                              (render-node e)
+                                              (if (not= idx tail-idx) (list (toggle-layout-element id sep)
+                                                                            (white-space-optional)))])
+                                 coll))))
 
 ;; EmptyStatement
 (defn empty-statement-render [_node]
@@ -95,8 +110,11 @@
 
 ;; ImportDeclaration
 (defn import-declaration-render [node]
-  (let [specifiers (get node "specifiers")
+  (let [id (id-of node)
+        specifiers (get node "specifiers")
         source (get node "source")]
+    (init-collapse! id false)
+    (init-layout! id "horizontal")
     [:div {:class "import declaration"}
      (js-keyword "import")
      (if (> (count specifiers) 0) (list (white-space)
@@ -113,9 +131,13 @@
                                               second-sp (second specifiers)
                                               second-sp-type (get second-sp "type")
                                               rest-sps (rest specifiers)
-                                              render-list (fn [import-specifier-list] [braces {} (list (white-space-optional)
-                                                                                                       (utils/join (map #(render-node %1) import-specifier-list) (list (comma) (white-space-optional)))
-                                                                                                       (white-space-optional))])]
+                                              render-list (fn [import-specifier-list] (let [tail-idx (- (count import-specifier-list) 1)]
+                                                                                        (collapsable-box {:id   id
+                                                                                                          :pair :brace} (map-indexed (fn [idx e] [:div.box-element
+                                                                                                                                                  (render-node e)
+                                                                                                                                                  (if (not= idx tail-idx) (list (toggle-layout-element id ",")
+                                                                                                                                                                                (white-space-optional)))])
+                                                                                                                                     import-specifier-list))))]
                                           (cond
                                             ;; case 1
                                             (and first-sp-only
@@ -342,7 +364,11 @@
         async (get node "async")
         id (get node "id")
         params (get node "params")
+        params-id (str (id-of node) ".params")
+        params-tail-idx (- (count params) 1)
         body (get node "body")]
+    (init-collapse! params-id false)
+    (init-layout! params-id (if (> params-tail-idx 4) "vertical" "horizontal"))
     [:div {:class "function declaration"}
      (if async (list (js-keyword "async")
                      (white-space)))
@@ -352,7 +378,11 @@
                          (white-space)))
      (if-not (nil? id) (list (render-node id)
                              (white-space-optional)))
-     (parenthese (utils/join (render-node-coll params) (list (comma) (white-space-optional))))
+     (collapsable-box {:id params-id} (map-indexed (fn [idx e] [:div.box-element
+                                                                (render-node e)
+                                                                (if (not= idx params-tail-idx) (list (toggle-layout-element params-id ",")
+                                                                                                     (white-space-optional)))])
+                                                   params))
      (white-space-optional)
      (render-node body)]))
 
@@ -375,9 +405,12 @@
 
 ;; ClassBody
 (defn class-body-render [node]
-  (let [body (get node "body")]
+  (let [id (id-of node)
+        body (get node "body")]
+    (init-collapse! id true)
     [:div {:class "class-body"}
-     [braces {} [:div (render-node-coll body)]]]))
+     (collapsable-box {:id   id
+                       :pair :brace} (render-node-coll body))]))
 
 ;; MethodDefinition
 (defn method-definition-render [node]
@@ -397,27 +430,47 @@
                                          _expression (get fn-exp-node "expression") ;; useless
                                          async (get fn-exp-node "async")
                                          params (get fn-exp-node "params")
+                                         params-id (str (id-of node) ".params")
                                          body (get fn-exp-node "body")]
+                                     (init-collapse! params-id false)
                                      (list (if async (list (js-keyword "async") ;; optional?
                                                            (white-space)))
                                            (if generator (list (asterisk)
                                                                (white-space))) ;; optional?
                                            (render-node key)
                                            (white-space-optional)
-                                           (parenthese (utils/join (render-node-coll params) (list (comma) (white-space-optional))))
+                                           (collapsable-box {:id params-id} (common-list {:id params-id} params))
                                            (white-space-optional)
-                                           (render-node body))))]))
+                                           (render-node body)))
+       (or (= kind "get")
+           (= kind "set")) (let [fn-exp-node value
+                                 params (get fn-exp-node "params")
+                                 params-id (str (id-of node) ".params")
+                                 body (get fn-exp-node "body")]
+                             (init-collapse! params-id false)
+                             (list (js-keyword kind)
+                                   (white-space)
+                                   (render-node key)
+                                   (white-space-optional)
+                                   (collapsable-box {:id params-id} (common-list {:id params-id} params))
+                                   (white-space-optional)
+                                   (render-node body))))]))
 
 ;; SwitchStatement
 (defn switch-statement-render [node]
-  (let [discriminant (get node "discriminant")
-        cases (get node "cases")]
+  (let [id (id-of node)
+        discriminant (get node "discriminant")
+        cases (get node "cases")
+        cases-id (str id ".cases")]
+    (init-collapse! id false)
+    (init-collapse! cases-id true)
     [:div {:class "switch statement"}
      (js-keyword "switch")
      (white-space-optional)
-     (parenthese (render-node discriminant))
+     (collapsable-box {:id id} (render-node discriminant))
      (white-space-optional)
-     (block-statement-render {"body" cases})]))
+     [collapsable-box {:id   cases-id
+                       :pair :brace} (render-node-coll cases)]]))
 
 ;; SwitchCase
 (defn switch-case-render [node]
@@ -430,6 +483,7 @@
                                                  (white-space)
                                                  (render-node test)
                                                  (colon)))]
+     (white-space-optional)
      [:div {:class "consequent"} (render-node-coll consequent)]]))
 
 ;; Identifier
@@ -458,7 +512,7 @@
      [collapsable-box {:id   id
                        :pair :bracket} (map-indexed (fn [idx e] [:div.box-element
                                                                  (render-node e)
-                                                                 (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click #(toggle-layout! id)} ","]
+                                                                 (if (not= idx tail-idx) (list (toggle-layout-element id ",")
                                                                                                (white-space-optional)))])
                                                     elements)]]))
 
