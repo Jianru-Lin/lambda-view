@@ -54,10 +54,12 @@
            "for(u;;) 1"
            "for(;v;) 1"
            "for(;;w) 1"
-           "for(a;b;c) 1"))
+           "for(a;b;c) 1"
+           "for (a;b;c) {1}"))
 
 (def for-of-statement
   (defdemo "for(a of b) 1"
+           "for(a of b) {1}"
            ;; TODO "for await (const x of xs) {}"
            ))
 
@@ -84,9 +86,24 @@
            "switch(a) {default: 1}"
            "switch(a) {case \"a\": 1; case \"b\": 2}"))
 
+(def while-statement
+  (defdemo "while(1) {2}"))
+
+(def do-while-statement
+  (defdemo "do {1} while(2)"))
+
+(def if-statement
+  (defdemo "if (1) 2"
+           "if (1) {2}"
+           ;; "if (1) 2 else 3" NOT WORKING, Invalid Grammer
+           "if (1) {2} else 3"
+           "if (1) {2} else {3}"
+           "if (1) {2} else if (3) {4}"
+           "if (1) {2} else if (3) {4} else {5}"))
+
 (defonce state (atom {:current nil}))
 
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current array-expression)
+(swap! state assoc :current for-of-statement)

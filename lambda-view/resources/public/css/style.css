@@ -1,59 +1,49 @@
 /* Basic Element Style */
 
-.keyword {
+.lambda-view {
+    display: flex;
+    flex-direction: column;
+}
+
+.lambda-view div {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.lambda-view .keyword {
     color: black;
 }
 
-.white-space {
+.lambda-view .white-space {
+    display: block;
     white-space: pre;
 }
 
-.statement,
-.declaration {
-    display: flex;
+.lambda-view .program {
+    flex-direction: column;
 }
 
-.expression > div:not(.white-space) {
+.lambda-view .statement,
+.lambda-view .declaration {
+    display: flex;
+    align-items: baseline;
+}
+
+.lambda-view .expression > div:not(.white-space) {
     display: inline-flex;
-}
-
-.import-specifier {
-    display: flex;
-}
-
-.import-namespace-specifier {
-    display: flex;
-}
-
-.catch-clause {
-    display: flex;
-}
-
-.variable-declarator {
-    display: flex;
-}
-
-.class-body {
-    display: flex;
-}
-
-.method-definition {
-    display: flex;
-}
-
-.switch-case .test {
-    display: flex;
+    align-items: baseline;
 }
 
 /* Pair */
 
-.pair {
+.lambda-view .pair {
     align-items: baseline;
 }
 
 /* Collapse/Uncollapse */
 
-.collapsed {
+.lambda-view .collapsed {
     background: rgba(255,255,255,0.1);
     color: rgba(255,255,255,0.25);
     border-radius: 2px;
@@ -63,63 +53,65 @@
 
 /* Collapse/Uncollapse - Hover Transition */
 
-.collapsed, .box {
+.lambda-view .collapsed, 
+.lambda-view .box {
     transition: all .15s;
 }
 
-.pair {
+.lambda-view .pair {
     display: flex;
 }
 
-.pair.left,
-.pair.right {
+.lambda-view .pair.left,
+.lambda-view .pair.right {
     transition: all .15s;
 }
 
-.pair.left.hover,
-.pair.right.hover,
-.collapsed:hover {
+.lambda-view .pair.left.hover,
+.lambda-view .pair.right.hover,
+.lambda-view .collapsed:hover {
     color: white;
     background: #ff8888;
 }
 
-.pair.left,
-.pair.right {
+.lambda-view .pair.left,
+.lambda-view .pair.right {
     cursor: pointer;
 }
 
 /* Horizontal/Vertical Layout */
 
-.box {
+.lambda-view .box {
     display: flex;
     border-radius: 4px;
     background: rgba(162, 162, 162, 0.05);
     vertical-align: top;
     padding: 1em;
+    outline: solid 1px #2D2D2D;
 }
 
-.box.horizontal {
+.lambda-view .box.horizontal {
     flex-direction: row;
 }
 
-.box.vertical {
+.lambda-view .box.vertical {
     flex-direction: column;
 }
 
-.box > .box-element {
+.lambda-view .box > .box-element {
     display: flex;
 }
 
-.array.expression {
+.lambda-view .array.expression {
     align-items: baseline;
 }
 
-.toggle-layout {
+.lambda-view .toggle-layout {
     cursor: pointer;
     transition: all .15s;
 }
 
-.toggle-layout:hover {
+.lambda-view .toggle-layout:hover {
     color: #ff8888;
 }
 
@@ -136,28 +128,28 @@
     line-height: 24px;
 }
 
-.keyword {
+.lambda-view .keyword {
     color: #CC99CC;
 }
 
-.identifier {
+.lambda-view .identifier {
     color: #F2777A;
 }
 
-.literal {
+.lambda-view .literal {
     color: rgb(153,204,153);
 }
 
 /* Color Theme - Hover Transition */
 
-.keyword,
-.literal,
-.identifier {
+.lambda-view .keyword,
+.lambda-view .literal,
+.lambda-view .identifier {
     transition: all .15s;
 }
 
-.keyword:hover,
-.literal:hover,
-.identifier:hover {
+.lambda-view .keyword:hover,
+.lambda-view .literal:hover,
+.lambda-view .identifier:hover {
     background: #515151;
 }

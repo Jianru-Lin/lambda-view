@@ -189,25 +189,47 @@
 
 ;; WhileStatement
 (defn while-statement-render [node]
-  (let [test (get node "test")
+  (let [id (id-of node)
+        test (get node "test")
+        test-id (str id ".test")
         body (get node "body")]
+    (init-collapse! test-id false)
     [:div {:class "while statement"}
-     (js-keyword "while") (white-space-optional) "(" (render-node test) ")" (white-space-optional) ((render-for-node body) body)]))
+     (js-keyword "while")
+     (white-space-optional)
+     (collapsable-box {:id   test-id
+                       :pair :parenthesis} (render-node test))
+     (white-space-optional)
+     ((render-for-node body) body)]))
 
 ;; DoWhileStatement
 (defn do-while-statement-render [node]
-  (let [body (get node "body")
-        test (get node "test")]
+  (let [id (id-of node)
+        body (get node "body")
+        test (get node "test")
+        test-id (str id ".test")]
+    (init-collapse! test-id false)
     [:div {:class "do-while statement"}
-     (js-keyword "do") (white-space-optional) (render-node body) (white-space-optional) (js-keyword "while") (white-space-optional) "(" (render-node test) ")"]))
+     (js-keyword "do")
+     (white-space-optional)
+     (render-node body)
+     (white-space-optional)
+     (js-keyword "while")
+     (white-space-optional)
+     (collapsable-box {:id   test-id
+                       :pair :parenthesis} (render-node test))]))
 
 ;; IfStatement
 (defn if-statement-render [node]
-  (let [test (get node "test")
+  (let [id (id-of node)
+        test (get node "test")
+        test-id (str id ".test")
         consequent (get node "consequent")
         alternate (get node "alternate")]
+    (init-collapse! test-id false)
     [:div {:class "if statement"}
-     (js-keyword "if") (white-space-optional) "(" (render-node test) ")" (white-space-optional)
+     (js-keyword "if") (white-space-optional) (collapsable-box {:id   test-id
+                                                                :pair :parenthesis} (render-node test)) (white-space-optional)
      (render-node consequent)
      (if (nil? alternate)
        nil
@@ -225,22 +247,30 @@
 
 ;; CatchClause
 (defn catch-clause-render [node]
-  (let [param (get node "param")
+  (let [id (id-of node)
+        param (get node "param")
+        param-id (str id ".param")
         body (get node "body")]
+    (init-collapse! param-id false)
     [:div {:class "catch-clause"}
      (js-keyword "catch")
      (white-space-optional)
-     (if-not (nil? param) (list (parenthese (render-node param)) (white-space-optional)))
+     (if-not (nil? param) (list (collapsable-box {:id   param-id
+                                                  :pair :parenthesis} (render-node param)) (white-space-optional)))
      (render-node body)]))
 
 ;; WithStatement
 (defn with-statement-render [node]
-  (let [object (get node "object")
+  (let [id (id-of node)
+        object (get node "object")
+        object-id (str id ".objectt")
         body (get node "body")]
+    (init-collapse! object-id false)
     [:div {:class "with statement"}
      (js-keyword "with")
      (white-space-optional)
-     (parenthese (render-node object))
+     (collapsable-box {:id   object-id
+                       :pair :parenthesis} (render-node object))
      (white-space-optional)
      (render-node body)]))
 
@@ -266,32 +296,38 @@
 
 ;; ForStatement
 (defn for-statement-render [node]
-  (let [init (get node "init")
+  (let [id (id-of node)
+        init (get node "init")
         test (get node "test")
         update (get node "update")
         body (get node "body")]
+    (init-collapse! id false)
     [:div {:class "for statement"}
      (js-keyword "for")
      (white-space-optional)
-     (parenthese (list (render-node init)
-                       (semicolon) (white-space-optional)
-                       (render-node test)
-                       (semicolon) (white-space-optional)
-                       (render-node update)))
+     (collapsable-box {:id   id
+                       :pair :parenthesis} (list (render-node init)
+                                                 (semicolon) (white-space-optional)
+                                                 (render-node test)
+                                                 (semicolon) (white-space-optional)
+                                                 (render-node update)))
      (white-space-optional)
      (render-node body)]))
 
 ;; ForOfStatement
 (defn for-of-statement-render [node]
-  (let [left (get node "left")
+  (let [id (id-of node)
+        left (get node "left")
         right (get node "right")
         body (get node "body")]
+    (init-collapse! id false)
     [:div {:class "for-of statement"}
      (js-keyword "for")
      (white-space-optional)
-     (parenthese (list (render-node left)
-                       (white-space) (js-keyword "of") (white-space)
-                       (render-node right)))
+     (collapsable-box {:id   id
+                       :pair :parenthesis} (list (render-node left)
+                                                 (white-space) (js-keyword "of") (white-space)
+                                                 (render-node right)))
      (white-space-optional)
      (render-node body)]))
 
