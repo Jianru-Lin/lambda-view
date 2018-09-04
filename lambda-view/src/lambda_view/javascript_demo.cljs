@@ -11,6 +11,10 @@
                       "[0,1,2];"
                       "({key: value});"))
 
+(def block-statement (defdemo "{}"
+                              ;"{label: statement}"
+                              ))
+
 (def import-declaration (clojure.string/join "\n" ["import a1 from 'm'"
                                                    "import * as m1 from 'm'"
                                                    "import {x1, y1} from 'm'"
@@ -78,4 +82,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current literal)
+(swap! state assoc :current block-statement)

@@ -16,8 +16,18 @@
                                    brackets
                                    parenthese
                                    braces
-                                   block
-                                   collapsed]]))
+                                   box
+                                   collapsed
+                                   collapsable-box
+                                   toggle-collapse]]
+        [lambda-view.tag :only [mark-id!
+                                id-of]]
+        [lambda-view.state :only [init-collapse!
+                                  get-collapse
+                                  set-collapse!
+                                  init-layout!
+                                  get-layout
+                                  set-layout!]]))
 
 (declare type-render)
 
@@ -34,6 +44,7 @@
                                 (if (nil? render) node-render-not-found render))))
 
 (defn render-node [node]
+  (mark-id! node)
   [(render-for-node node) node])
 
 (defn render-node-coll [nodes]
@@ -56,12 +67,12 @@
 
 ;; BlockStatement
 (defn block-statement-render [node]
-  [:div {:class "block statement"}
-   [:div "{"]
-   (white-space-optional)
-   [:div (for [body (get node "body")] (render-node body))]
-   (white-space-optional)
-   [:div "}"]])
+  (let [id (id-of node)
+        body (get node "body")]
+    (init-collapse! id true)
+    [:div.block.statement
+     [collapsable-box {:id   id
+                       :pair :brace} (render-node-coll body)]]))
 
 ;; BreakStatement
 (defn break-statement-render [_node]
@@ -101,9 +112,9 @@
                                               second-sp (second specifiers)
                                               second-sp-type (get second-sp "type")
                                               rest-sps (rest specifiers)
-                                              render-list (fn [import-specifier-list] (braces (list (white-space-optional)
-                                                                                                    (utils/join (map #(render-node %1) import-specifier-list) (list (comma) (white-space-optional)))
-                                                                                                    (white-space-optional))))]
+                                              render-list (fn [import-specifier-list] [braces {} (list (white-space-optional)
+                                                                                                       (utils/join (map #(render-node %1) import-specifier-list) (list (comma) (white-space-optional)))
+                                                                                                       (white-space-optional))])]
                                           (cond
                                             ;; case 1
                                             (and first-sp-only
@@ -329,7 +340,7 @@
 (defn class-body-render [node]
   (let [body (get node "body")]
     [:div {:class "class-body"}
-     (braces [:div (render-node-coll body)])]))
+     [braces {} [:div (render-node-coll body)]]]))
 
 ;; MethodDefinition
 (defn method-definition-render [node]
@@ -407,17 +418,14 @@
         toggle-collapse (fn [] (swap! state assoc :collapse (not (:collapse @state))))]
     (fn []
       (let [elements (get node "elements")
-            tail-idx (- (count elements) 1)
-            is-collapsed (= true (:collapse @state))]
-        (println "array-expression-render" @state)
-        (println "is-collapsed" is-collapsed)
+            tail-idx (- (count elements) 1)]
         [:div.array.expression
          (if (= 0 (count elements)) [brackets {:on-click toggle-collapse} nil]
-                                    [brackets {:on-click toggle-collapse} [collapsed {:state state} [block {:state state} (map-indexed (fn [idx e] [:div.block-element
-                                                                                                                        (render-node e)
-                                                                                                                        (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click toggle-layout} ","]
-                                                                                                                                                      (white-space-optional)))])
-                                                                                                           elements)]]])]))))
+                                    [brackets {:on-click toggle-collapse} [collapsable-box {:state state} (map-indexed (fn [idx e] [:div.box-element
+                                                                                                                                    (render-node e)
+                                                                                                                                    (if (not= idx tail-idx) (list [:div.toggle-layout.comma {:on-click toggle-layout} ","]
+                                                                                                                                                                  (white-space-optional)))])
+                                                                                                                       elements)]])]))))
 
 
 ;; Map node type to render function
