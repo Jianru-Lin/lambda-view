@@ -110,4 +110,4 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current class-declaration)
+(swap! state assoc :current function-declration)

@@ -131,13 +131,8 @@
                                               second-sp (second specifiers)
                                               second-sp-type (get second-sp "type")
                                               rest-sps (rest specifiers)
-                                              render-list (fn [import-specifier-list] (let [tail-idx (- (count import-specifier-list) 1)]
-                                                                                        (collapsable-box {:id   id
-                                                                                                          :pair :brace} (map-indexed (fn [idx e] [:div.box-element
-                                                                                                                                                  (render-node e)
-                                                                                                                                                  (if (not= idx tail-idx) (list (toggle-layout-element id ",")
-                                                                                                                                                                                (white-space-optional)))])
-                                                                                                                                     import-specifier-list))))]
+                                              render-list (fn [import-specifier-list] (collapsable-box {:id   id
+                                                                                                        :pair :brace} (common-list {:id id} import-specifier-list)))]
                                           (cond
                                             ;; case 1
                                             (and first-sp-only
@@ -378,11 +373,7 @@
                          (white-space)))
      (if-not (nil? id) (list (render-node id)
                              (white-space-optional)))
-     (collapsable-box {:id params-id} (map-indexed (fn [idx e] [:div.box-element
-                                                                (render-node e)
-                                                                (if (not= idx params-tail-idx) (list (toggle-layout-element params-id ",")
-                                                                                                     (white-space-optional)))])
-                                                   params))
+     (collapsable-box {:id params-id} (common-list {:id params-id} params))
      (white-space-optional)
      (render-node body)]))
 
@@ -504,17 +495,11 @@
 ;; ArrayExpression
 (defn array-expression-render [node]
   (let [id (id-of node)
-        elements (get node "elements")
-        tail-idx (- (count elements) 1)]
+        elements (get node "elements")]
     (init-collapse! id true)
-    (init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
     [:div.array.expression
      [collapsable-box {:id   id
-                       :pair :bracket} (map-indexed (fn [idx e] [:div.box-element
-                                                                 (render-node e)
-                                                                 (if (not= idx tail-idx) (list (toggle-layout-element id ",")
-                                                                                               (white-space-optional)))])
-                                                    elements)]]))
+                       :pair :bracket} (common-list {:id id} elements)]]))
 
 
 ;; Map node type to render function
