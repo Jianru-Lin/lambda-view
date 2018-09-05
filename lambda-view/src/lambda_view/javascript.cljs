@@ -20,7 +20,8 @@
                                    collapsed
                                    collapsable-box
                                    toggle-collapse
-                                   toggle-layout-element]]
+                                   toggle-layout-element
+                                   operator]]
         [lambda-view.tag :only [mark-id!
                                 id-of]]
         [lambda-view.state :only [init-collapse!
@@ -52,6 +53,17 @@
 (defn render-node-coll [nodes]
   (map render-node nodes))
 
+(defn render-exp-node [exp-node parent-exp-node]
+  ; TODO Compare Priority...
+  (println "render-exp-node" exp-node parent-exp-node)
+  (if (or (nil? parent-exp-node)
+          (= "Identifier" (get exp-node "type"))) (render-node exp-node)
+                                                  (let [id (id-of exp-node)]
+                                                    (init-collapse! id false)
+                                                    (init-layout! id "horizontal")
+                                                    (collapsable-box {:id    id
+                                                                      :style :mini} (render-node exp-node)))))
+
 (defn common-list [attr coll]
   (if (nil? coll) nil
                   (let [id (:id attr)
@@ -64,6 +76,20 @@
                                               (render-node e)
                                               (if (not= idx tail-idx) (list (toggle-layout-element id sep)
                                                                             (white-space-optional)))])
+                                 coll))))
+
+(defn common-exp-list [attr coll parent]
+  (if (nil? coll) nil
+                  (let [id (:id attr)
+                        sep (cond
+                              (= (:sep attr) :comma) (comma)
+                              true (comma))
+                        tail-idx (- (count coll) 1)]
+                    (init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
+                    (map-indexed (fn [idx e] ^{:key (id-of e)} [:div.box-element
+                                                                (render-exp-node e parent)
+                                                                (if (not= idx tail-idx) (list ^{:key :a} (toggle-layout-element id sep)
+                                                                                              ^{:key :b} (white-space-optional)))])
                                  coll))))
 
 ;; EmptyStatement
@@ -501,6 +527,40 @@
      [collapsable-box {:id   id
                        :pair :bracket} (common-list {:id id} elements)]]))
 
+;; AssignmentExpression
+(defn assignment-expression-render [node]
+  (let [op (get node "operator")
+        left (get node "left")
+        right (get node "right")]
+    [:div.assignment.expression
+     (render-exp-node left node)
+     (white-space-optional)
+     (operator op)
+     (white-space-optional)
+     (render-exp-node right node)]))
+
+;; BinaryExpression
+(defn binary-expression-render [node]
+  (let [op (get node "operator")
+        left (get node "left")
+        right (get node "right")]
+    [:div.binary.expression
+     (render-exp-node left node)
+     (white-space-optional)
+     (operator op)
+     (white-space-optional)
+     (render-exp-node right node)]))
+
+;; ThisExpression
+(defn this-expression-render [_node]
+  [:div.this.expression (js-keyword "this")])
+
+;; SequenceExpression
+(defn sequence-expression-render [node]
+  (let [id (id-of node)
+        expressions (get node "expressions")]
+    (println "sequence-expression-render" id)
+    [:div.sequence.expression (common-exp-list {:id id} expressions node)]))
 
 ;; Map node type to render function
 (def type-render {"Program"                  program-render
@@ -536,7 +596,12 @@
                   "SwitchCase"               switch-case-render
                   "ArrayExpression"          array-expression-render
                   "Identifier"               identifier-render
-                  "Literal"                  literal-render})
+                  "Literal"                  literal-render
+                  ;; Expressions
+                  "AssignmentExpression"     assignment-expression-render
+                  "BinaryExpression"         binary-expression-render
+                  "SequenceExpression"       sequence-expression-render
+                  "ThisExpression"           this-expression-render})
 
 (defn ast-render [ast]
   (render-node ast))

@@ -26,6 +26,9 @@
 (defn white-space-optional []
   [:div.white-space.optional " "])
 
+(defn operator [v]
+  [:div.operator v])
+
 ;; Pair Factory
 ;; [(pair "{" "}") content]
 (defn pair [left right]
@@ -55,12 +58,15 @@
 
 (defn box [attr content]
   (let [id (:id attr)
+        style (if (= (:style attr) :mini) "mini")
         layout (state/get-layout id)]
-    [:div {:class (str "box " layout)} content]))
+    [:div {:class (str "box " layout " " style)} content]))
 
 (defn collapsed [attr]
-  (let [id (:id attr)]
-    [:div.collapsed {:on-click (fn [] (state/set-collapse! id false))} "..."]))
+  (let [id (:id attr)
+        style (if (= (:style attr) :mini) "mini")]
+    [:div.collapsed {:class style
+                     :on-click (fn [] (state/set-collapse! id false))} "..."]))
 
 (defn toggle-collapse [state]
   (fn [] (swap! state assoc :collapse (not (:collapse @state)))))
@@ -74,12 +80,15 @@
                        (= pair :bracket) brackets
                        (= pair :parenthesis) parenthese
                        true parenthese)
+        style (:style attr)
         on-click (fn [] (state/toggle-collapse! id))]
     [pair-wrapper {:id       id
                    :on-click on-click} (if (or (nil? content)
                                                (= 0 (count content))) nil
-                                                                      (if collapse [collapsed {:id id}]
-                                                                                   [box {:id id} content]))]))
+                                                                      (if collapse [collapsed {:id    id
+                                                                                               :style style}]
+                                                                                   [box {:id    id
+                                                                                         :style style} content]))]))
 
 (defn toggle-layout-element [id ele]
   [:div.toggle-layout {:on-click #(state/toggle-layout! id)} ele])

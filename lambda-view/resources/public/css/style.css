@@ -52,6 +52,10 @@
     padding: 4px;
 }
 
+.lambda-view .collapsed.mini {
+    padding: 0;
+}
+
 /* Collapse/Uncollapse - Hover Transition */
 
 .lambda-view .collapsed, 
@@ -86,9 +90,14 @@
     display: flex;
     border-radius: 4px;
     background: rgba(162, 162, 162, 0.05);
-    vertical-align: top;
     padding: 1em;
     outline: solid 1px #2D2D2D;
+}
+
+.lambda-view .box.mini {
+    background: transparent;
+    outline: none;
+    padding: 0;
 }
 
 .lambda-view .box.horizontal {

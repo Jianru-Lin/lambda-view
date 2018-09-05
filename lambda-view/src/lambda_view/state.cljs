@@ -67,11 +67,11 @@
 (defn get-hover [id]
   (let [v (get @hover id)
         ret (if (nil? v) false v)]
-    (println "get-hover" id ret)
+    (comment (println "get-hover" id ret))
     ret))
 
 (defn set-hover! [id v]
-  (println "set-hover!" id v)
+  (comment (println "set-hover!" id v))
   (swap! hover assoc id v))
 
 (defn toggle-hover! [id]

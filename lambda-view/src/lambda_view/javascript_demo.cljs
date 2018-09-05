@@ -105,9 +105,28 @@
            "if (1) {2} else if (3) {4}"
            "if (1) {2} else if (3) {4} else {5}"))
 
+(def assignment-expression
+  (defdemo "a = 1"
+           "c = d = 2"))
+
+(def binary-expression
+  (defdemo "a + b;"
+           "a - b;"
+           "a + b * c;"
+           "(a + b) * c;"))
+
+(def this-expression
+  (defdemo "this;"))
+
+(def sequence-expression
+  (defdemo "a, b;"
+           ;"a, b, c;"
+           ;"a, (b, c);"
+           ))
+
 (defonce state (atom {:current nil}))
 
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current function-declration)
+(swap! state assoc :current sequence-expression)
