@@ -1,7 +1,6 @@
 (ns lambda-view.core
   (:require [reagent.core :as reagent :refer [atom]]
-            [lambda-view.javascript :as js-lang]
-            [lambda-view.javascript-demo :as js-demo]))
+            [lambda-view.javascript.core :as js-lang]))
 
 (enable-console-print!)
 
@@ -9,7 +8,7 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:source   (js-demo/current)
+(defonce app-state (atom {:source   (js-lang/current)
                           :ast-json nil
                           :ast      nil
                           :error    nil}))
@@ -76,5 +75,5 @@
   ;; optionally touch your app-state to force rerendering depending on
   ;; your application
   ;; (swap! app-state update-in [:__figwheel_counter] inc)
-  (swap! app-state assoc :source (js-demo/current))
+  (swap! app-state assoc :source (js-lang/current))
   (regen (:source @app-state)))

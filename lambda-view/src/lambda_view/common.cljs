@@ -1,6 +1,8 @@
 (ns lambda-view.common
   (:require [reagent.core :as reagent]
-            [lambda-view.state :as state]))
+            [lambda-view.state :as state])
+  (:use [lambda-view.state :only [init-layout!]]
+        [lambda-view.javascript.render :only [render-node]]))
 
 (defn js-keyword [text]
   [:div.keyword text])
@@ -92,3 +94,17 @@
 
 (defn toggle-layout-element [id ele]
   [:div.toggle-layout {:on-click #(state/toggle-layout! id)} ele])
+
+(defn common-list [attr coll]
+  (if (nil? coll) nil
+                  (let [id (:id attr)
+                        sep (cond
+                              (= (:sep attr) :comma) (comma)
+                              true (comma))
+                        tail-idx (- (count coll) 1)]
+                    (init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
+                    (map-indexed (fn [idx e] [:div.box-element
+                                              (render-node e)
+                                              (if (not= idx tail-idx) (list (toggle-layout-element id sep)
+                                                                            (white-space-optional)))])
+                                 coll))))

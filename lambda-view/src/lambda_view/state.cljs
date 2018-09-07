@@ -24,7 +24,7 @@
 (defn toggle-collapse! [id]
   (let [v (get @collapse id)]
     (if-not (nil? v) (do (println "toggle-collapse!" id "from" v "to" (not v))
-                         (set-collapse! id (not v)))
+                         (swap! collapse assoc id (not v)))
                      (do (println "toggle-collapse!" id "ignore")))))
 
 ;; Layout State ;; TODO GC
