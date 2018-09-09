@@ -19,6 +19,7 @@
             [lambda-view.javascript.statement.t-empty :as t-empty]
             [lambda-view.javascript.statement.t-expression :as t-expression]
             [lambda-view.javascript.statement.t-for :as t-for]
+            [lambda-view.javascript.statement.t-for-in :as t-for-in]
             [lambda-view.javascript.statement.t-for-of :as t-for-of]
             [lambda-view.javascript.statement.t-if :as t-if]
             [lambda-view.javascript.statement.t-labeled :as t-labeled]
@@ -29,17 +30,19 @@
             [lambda-view.javascript.statement.t-while :as t-while]
             [lambda-view.javascript.statement.t-with :as t-with]
             [lambda-view.javascript.expression.t-array :as t-array]
+            [lambda-view.javascript.expression.t-arrow-function :as t-arrow-function]
             [lambda-view.javascript.expression.t-assignment :as t-assignment]
             [lambda-view.javascript.expression.t-binary :as t-binary]
+            [lambda-view.javascript.expression.t-function :as t-function-exp]
             [lambda-view.javascript.expression.t-logical :as t-logical]
             [lambda-view.javascript.expression.t-member :as t-member]
+            [lambda-view.javascript.expression.t-object :as t-object]
             [lambda-view.javascript.expression.t-sequence :as t-sequence]
             [lambda-view.javascript.expression.t-this :as t-this]
             [lambda-view.javascript.expression.t-unary :as t-unary]))
 
 ;; Map node type to render function
-(def type-render {
-                  "Identifier"               t-identifier/render
+(def type-render {"Identifier"               t-identifier/render
                   "Literal"                  t-literal/render
                   "Program"                  t-program/render
                   ; Declaration
@@ -63,6 +66,7 @@
                   "EmptyStatement"           t-empty/render
                   "ExpressionStatement"      t-expression/render
                   "ForStatement"             t-for/render
+                  "ForInStatement"           t-for-in/render
                   "ForOfStatement"           t-for-of/render
                   "IfStatement"              t-if/render
                   "LabeledStatement"         t-labeled/render
@@ -76,10 +80,15 @@
                   "WithStatement"            t-with/render
                   ;; Expression
                   "ArrayExpression"          t-array/render
+                  "ArrowFunctionExpression"  t-arrow-function/render
                   "AssignmentExpression"     t-assignment/render
                   "BinaryExpression"         t-binary/render
+                  "FunctionExpression"       t-function-exp/render
                   "LogicalExpression"        t-logical/render
                   "MemberExpression"         t-member/render
+                  "ObjectExpression"         t-object/object-expression-render
+                  "Property"                 t-object/property-render
+                  "SpreadElement"            t-object/spread-element
                   "SequenceExpression"       t-sequence/render
                   "ThisExpression"           t-this/render
                   "UnaryExpression"          t-unary/render})
@@ -96,5 +105,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-block/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-object/demo))
 

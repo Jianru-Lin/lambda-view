@@ -2,21 +2,10 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.statement.t-labeled
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   colon
-                                   equal
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space-optional
+                                              colon]]))
 
 ;; LabeledStatement
 (defn render [node]
@@ -27,3 +16,5 @@
      (colon)
      (white-space-optional)
      [:div {:class "body"} (render-node body)]]))
+
+(def demo ["label: 1"])

@@ -84,7 +84,7 @@
                        (= pair :bracket) brackets
                        (= pair :parenthesis) parenthese
                        (= pair :none) nil
-                       true (throw (.js/Error (str "Invalid pair option: " pair))))
+                       true (throw (js/Error. (str "Invalid pair option: " pair))))
         style (:style attr)
         on-click (fn [] (state/toggle-collapse! id))
         final-content (if (or (nil? content)
@@ -131,18 +131,19 @@
 (defn common-list2 [attr coll]
   (let [id (:id attr)
         seperator (:seperator attr)
+        auto-render (:auto-render attr)
         tail-idx (- (count coll) 1)]
     (doall (map-indexed (fn [idx e] (let [e-id (mark-id! e)]
                                       ^{:key e-id} [:div.box-element
-                                                    (render-node e)
+                                                    (if (= auto-render false) e
+                                                                              (render-node e))
                                                     ;; we tested the same condition twice to avoid using (list ...)
                                                     ;; because we don't want to generate key for each element in that list again!
-                                                    (if (not= idx tail-idx) (toggle-layout-element id (comma)))
-                                                    (if (not= idx tail-idx) (white-space-optional))
-                                                    ;; like this... :(
-                                                    #_(if (not= idx tail-idx) (list (with-meta (toggle-layout-element id (cond (= seperator :comma) (comma)
-                                                                                                                               true (comma))) {:key (str e-id ".tg")})
-                                                                                    (with-meta (white-space-optional) {:key (str e-id ".sp")})))]))
+                                                    (if (and (not= idx tail-idx)
+                                                             (not= seperator :none)) (toggle-layout-element id (cond (= seperator :comma) (comma)
+                                                                                                            (= seperator :semicolon) (semicolon))))
+                                                    (if (and (not= idx tail-idx)
+                                                             (not= seperator :none)) (white-space-optional))]))
                         coll))))
 
 (defn smart-box [attr coll]
@@ -150,9 +151,10 @@
         pair (:pair attr)
         init-layout-value (:init-layout attr)
         init-collapse-value (:init-collapse attr)
-        seperator (:seperator attr)]
+        seperator (:seperator attr)
+        auto-render (:auto-render attr)]
     ; id is required
-    (if (nil? id) (throw (.js/Error (str "id of smart-box is nil: " attr " " coll))))
+    (if (nil? id) (throw (js/Error. (str "id of smart-box is nil: " attr " " coll))))
     ; default layout
     (if-not (nil? init-layout-value) (state/init-layout! id init-layout-value)
                                      (state/init-layout! id "horizontal"))
@@ -162,5 +164,6 @@
     ; render it
     (collapsable-box {:id   id
                       :pair pair} (if (nil? coll) nil
-                                                  (common-list2 {:id        id
-                                                                 :seperator seperator} coll)))))
+                                                  (common-list2 {:id          id
+                                                                 :seperator   seperator
+                                                                 :auto-render auto-render} coll)))))

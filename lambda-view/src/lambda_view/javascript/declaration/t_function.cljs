@@ -2,17 +2,13 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.declaration.t-function
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space
+                                              white-space-optional
+                                              asterisk
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; FunctionDeclaration
 (defn render [node]
@@ -25,12 +21,8 @@
         async (get node "async")
         id (get node "id")
         params (get node "params")
-        params-id (str (id-of node) ".params")
-        params-tail-idx (- (count params) 1)
         body (get node "body")]
-    (init-collapse! params-id false)
-    (init-layout! params-id (if (> params-tail-idx 4) "vertical" "horizontal"))
-    [:div {:class "function declaration"}
+    [:div.function.statement
      (if async (list (js-keyword "async")
                      (white-space)))
      (js-keyword "function")
@@ -39,7 +31,11 @@
                          (white-space)))
      (if-not (nil? id) (list (render-node id)
                              (white-space-optional)))
-     (collapsable-box {:id params-id} (common-list {:id params-id} params))
+     (smart-box {:id            (str (id-of node) ".params")
+                 :pair          :parenthesis
+                 :seperator     :comma
+                 :init-collapse false
+                 :init-layout   "horizontal"} params)
      (white-space-optional)
      (render-node body)]))
 

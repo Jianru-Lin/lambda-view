@@ -2,20 +2,11 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.statement.t-while
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   equal
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space-optional
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; WhileStatement
 (defn render [node]
@@ -23,12 +14,12 @@
         test (get node "test")
         test-id (str id ".test")
         body (get node "body")]
-    (init-collapse! test-id false)
     [:div {:class "while statement"}
      (js-keyword "while")
      (white-space-optional)
-     (collapsable-box {:id   test-id
-                       :pair :parenthesis} (render-node test))
+     (smart-box {:id            test-id
+                 :pair          :parenthesis
+                 :init-collapse false} [test])
      (white-space-optional)
      (render-node body)]))
 

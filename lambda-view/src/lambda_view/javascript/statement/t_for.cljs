@@ -2,21 +2,12 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.statement.t-for
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   equal
-                                   semicolon
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space-optional
+                                              semicolon
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; ForStatement
 (defn render [node]
@@ -25,16 +16,14 @@
         test (get node "test")
         update (get node "update")
         body (get node "body")]
-    (init-collapse! id false)
     [:div {:class "for statement"}
      (js-keyword "for")
      (white-space-optional)
-     (collapsable-box {:id   id
-                       :pair :parenthesis} (list (render-node init)
-                                                 (semicolon) (white-space-optional)
-                                                 (render-node test)
-                                                 (semicolon) (white-space-optional)
-                                                 (render-node update)))
+     (smart-box {:id            id
+                 :pair          :parenthesis
+                 :seperator     :semicolon
+                 :init-collapse false
+                 :init-layout "horizontal"} [init test update])
      (white-space-optional)
      (render-node body)]))
 

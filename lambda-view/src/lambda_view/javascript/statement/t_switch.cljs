@@ -2,51 +2,49 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.statement.t-switch
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   equal
-                                   colon
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              colon
+                                              white-space
+                                              white-space-optional
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; SwitchStatement
 (defn switch-statement-render [node]
   (let [id (id-of node)
         discriminant (get node "discriminant")
-        cases (get node "cases")
-        cases-id (str id ".cases")]
-    (init-collapse! id false)
-    (init-collapse! cases-id true)
+        cases (get node "cases")]
     [:div {:class "switch statement"}
      (js-keyword "switch")
      (white-space-optional)
-     (collapsable-box {:id id} (render-node discriminant))
+     (smart-box {:id            id
+                 :pair          :parenthesis
+                 :init-collapse false} [discriminant])
      (white-space-optional)
-     [collapsable-box {:id   cases-id
-                       :pair :brace} (render-node-coll cases)]]))
+     (smart-box {:id            (str id ".cases")
+                 :pair          :brace
+                 :init-collapse false
+                 :init-layout   "vertical"} cases)]))
 
 ;; SwitchCase
 (defn switch-case-render [node]
-  (let [consequent (get node "consequent")
+  (let [id (id-of node)
+        consequent (get node "consequent")
         test (get node "test")]
     [:div {:class "switch-case"}
-     [:div {:class "test"} (if (nil? test) (list (js-keyword "default")
-                                                 (colon))
-                                           (list (js-keyword "case")
-                                                 (white-space)
-                                                 (render-node test)
-                                                 (colon)))]
+     [:div {:class "test"} (if (nil? test) [:div
+                                            (js-keyword "default")
+                                            (colon)]
+                                           [:div
+                                            (js-keyword "case")
+                                            (white-space)
+                                            (render-node test)
+                                            (colon)])]
      (white-space-optional)
-     [:div {:class "consequent"} (render-node-coll consequent)]]))
+     [:div {:class "consequent"} (smart-box {:id            id
+                                             :pair          :brace
+                                             :init-collapse true} consequent)]]))
 
 
 (def demo ["switch(a) {}"

@@ -2,20 +2,11 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.statement.t-with
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   equal
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space-optional
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; WithStatement
 (defn render [node]
@@ -23,12 +14,12 @@
         object (get node "object")
         object-id (str id ".objectt")
         body (get node "body")]
-    (init-collapse! object-id false)
     [:div {:class "with statement"}
      (js-keyword "with")
      (white-space-optional)
-     (collapsable-box {:id   object-id
-                       :pair :parenthesis} (render-node object))
+     (smart-box {:id            object-id
+                 :pair          :parenthesis
+                 :init-collapse false} [object])
      (white-space-optional)
      (render-node body)]))
 
