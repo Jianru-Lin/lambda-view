@@ -10,7 +10,7 @@
     (= coll nil) nil
     ;; seq is ok
     (seq? coll) (let [tail-idx (- (count coll) 1)
-                      temp-coll (map-indexed (fn [idx item] [idx item el]) coll)
+                      temp-coll (doall (map-indexed (fn [idx item] [idx item el]) coll))
                       reduce-op (fn [left item] (let [[idx item el] item]
                                                   (if (= idx tail-idx) (conj left item)
                                                                        (conj (conj left item) el))))

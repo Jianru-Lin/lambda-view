@@ -4,7 +4,7 @@
 (ns lambda-view.javascript.declaration.t-export-default
   (:use [lambda-view.javascript.render :only [render-node
                                             render-node-coll]]
-        [lambda-view.common :only [js-keyword
+        [lambda-view.javascript.common :only [js-keyword
                                    white-space
                                    white-space-optional
                                    asterisk

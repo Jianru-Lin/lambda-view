@@ -96,5 +96,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-switch/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-block/demo))
 

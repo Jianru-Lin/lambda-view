@@ -2,8 +2,8 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-binary
-  (:use [lambda-view.javascript.render :only [render-exp-node]]
-        [lambda-view.common :only [js-keyword
+  (:use [lambda-view.javascript.common :only [render-exp-node]]
+        [lambda-view.javascript.common :only [js-keyword
                                    white-space
                                    white-space-optional
                                    asterisk

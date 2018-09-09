@@ -2,15 +2,15 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-assignment
-  (:use [lambda-view.javascript.render :only [render-exp-node]]
-        [lambda-view.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   common-list
-                                   operator
-                                   collapsable-box]]
+  (:use [lambda-view.javascript.common :only [js-keyword
+                                              white-space
+                                              white-space-optional
+                                              asterisk
+                                              comma
+                                              common-list
+                                              operator
+                                              collapsable-box
+                                              render-exp-node]]
         [lambda-view.tag :only [id-of]]
         [lambda-view.state :only [init-collapse!
                                   init-layout!]]))
