@@ -36,6 +36,11 @@
     align-items: baseline;
 }
 
+.lambda-view .conditional.expression > .branch {
+    display: flex;
+    flex-direction: column;
+}
+
 /* Pair */
 
 .lambda-view .pair {
@@ -92,6 +97,7 @@
     background: rgba(162, 162, 162, 0.05);
     padding: 1em;
     outline: solid 1px #2D2D2D;
+    white-space: pre;
 }
 
 .lambda-view .box.mini {
@@ -146,20 +152,53 @@
     color: #F2777A;
 }
 
-.lambda-view .literal {
+.lambda-view .literal,
+.lambda-view .template-element {
     color: rgb(153,204,153);
+}
+
+.lambda-view .operator {
+    color: #66CCCC;
 }
 
 /* Color Theme - Hover Transition */
 
 .lambda-view .keyword,
 .lambda-view .literal,
-.lambda-view .identifier {
+.lambda-view .identifier,
+.lambda-view .operator,
+.lambda-view .template-element {
     transition: all .15s;
 }
 
 .lambda-view .keyword:hover,
 .lambda-view .literal:hover,
-.lambda-view .identifier:hover {
+.lambda-view .identifier:hover,
+.lambda-view .operator:hover,
+.lambda-view .template-element:hover {
     background: #515151;
+}
+
+.lambda-view .literal.regex:hover,
+.lambda-view .literal.string:hover {
+    background: transparent;
+}
+
+.lambda-view .literal.number > .prefix {
+    opacity: 0.5;
+    color: hsla(120, 0%, 70%, 1);
+}
+
+.lambda-view .literal.boolean {
+    color: #99f0fb;
+}
+
+.lambda-view .literal.null,
+.lambda-view .literal.undefined {
+    color: white;
+    opacity: 0.5;
+}
+
+.lambda-view .semicolon {
+    opacity: 0.2;
 }

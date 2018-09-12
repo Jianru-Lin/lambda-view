@@ -2,16 +2,13 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-arrow-function
-  (:use [lambda-view.javascript.render :only [render-node
-                                              render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
+                                              smart-box
                                               white-space
-                                              white-space-optional
-                                              asterisk
-                                              smart-box]]
+                                              white-space-optional]]
         [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+        [lambda-view.javascript.expression.utils :only [render-node-by-priority]]))
 
 ;; ArrowFunctionExpression
 (defn render [node]

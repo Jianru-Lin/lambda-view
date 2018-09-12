@@ -2,18 +2,12 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-binary
-  (:use [lambda-view.javascript.common :only [render-exp-node]]
-        [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   common-list
-                                   operator
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+      (:use [lambda-view.javascript.render :only [render-node]]
+            [lambda-view.javascript.common :only [smart-box
+                                                  operator
+                                                  white-space-optional]]
+            [lambda-view.tag :only [id-of]]
+            [lambda-view.javascript.expression.utils :only [render-node-by-priority]]))
 
 ;; BinaryExpression
 (defn render [node]
@@ -21,13 +15,36 @@
         left (get node "left")
         right (get node "right")]
     [:div.binary.expression
-     (render-exp-node left node)
+     (render-node-by-priority node left)
      (white-space-optional)
      (operator op)
      (white-space-optional)
-     (render-exp-node right node)]))
+     (render-node-by-priority node right)]))
 
-(def demo ["a + b;"
+(def demo [
+           ;"a + b;"
+           ;"a - b;"
+           ;"a + b * c;"
+           ;"(a + b) * c;"
+           "a | b;"
+           "a ^ b;"
+           "a & b;"
+           "a == b;"
+           "a != b;"
+           "a === b;"
+           "a !== b;"
+           "a < b;"
+           "a > b;"
+           "a <= b;"
+           "a > b;"
+           "a in b;"
+           "a instanceof b;"
+           "a << b;"
+           "a > b;"
+           "a > b;"
+           "a + b;"
            "a - b;"
-           "a + b * c;"
-           "(a + b) * c;"])
+           "a * b;"
+           "a % b;"
+           "a / b;"
+           ])

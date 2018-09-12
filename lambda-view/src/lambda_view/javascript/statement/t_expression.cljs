@@ -15,6 +15,7 @@
         directive (get node "directive")]
     [:div {:class "expression statement"}
      (smart-box {:id            id
+                 :style         :mini
                  ;; TODO only show pairs for object/array/? expression is required?
                  :pair          :parenthesis
                  :seperator     :none

@@ -12,6 +12,7 @@
     [:div.array.expression
      (smart-box {:id            id
                  :pair          :bracket
+                 :seperator     :comma
                  :exp-mode      true
                  :init-collapse false
                  :init-layout   (if (> (count elements) 5) "vertical" "horizontal")} elements)]))

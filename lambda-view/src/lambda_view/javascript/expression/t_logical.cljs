@@ -2,18 +2,12 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-logical
-  (:use [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   common-list
-                                   operator
-                                   collapsable-box
-                                   render-exp-node]]
+  (:use [lambda-view.javascript.render :only [render-node]]
+        [lambda-view.javascript.common :only [smart-box
+                                              operator
+                                              white-space-optional]]
         [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+        [lambda-view.javascript.expression.utils :only [render-node-by-priority]]))
 
 ;; LogicalExpression
 (defn render [node]
@@ -21,11 +15,14 @@
         left (get node "left")
         right (get node "right")]
     [:div.logical.expression
-     (render-exp-node left node)
+     (render-node-by-priority node left)
      (white-space-optional)
      (operator op)
      (white-space-optional)
-     (render-exp-node right node)]))
+     (render-node-by-priority node right)]))
 
 (def demo ["a || b;"
-           "a && b;"])
+           "a && b;"
+           "a || b && c;"
+           "a || (b && c);"
+           "(a || b) && c;"])

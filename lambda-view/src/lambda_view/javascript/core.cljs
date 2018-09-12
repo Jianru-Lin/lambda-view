@@ -6,6 +6,7 @@
             [lambda-view.javascript.basic.t-literal :as t-literal]
             [lambda-view.javascript.basic.t-identifier :as t-identifier]
             [lambda-view.javascript.basic.t-program :as t-program]
+            [lambda-view.javascript.basic.t-template-literal :as t-template-literal]
             [lambda-view.javascript.declaration.t-class :as t-class]
             [lambda-view.javascript.declaration.t-export-default :as t-export-default]
             [lambda-view.javascript.declaration.t-function :as t-function]
@@ -31,20 +32,29 @@
             [lambda-view.javascript.statement.t-with :as t-with]
             [lambda-view.javascript.expression.t-array :as t-array]
             [lambda-view.javascript.expression.t-arrow-function :as t-arrow-function]
+            [lambda-view.javascript.expression.t-await :as t-await]
             [lambda-view.javascript.expression.t-assignment :as t-assignment]
             [lambda-view.javascript.expression.t-binary :as t-binary]
+            [lambda-view.javascript.expression.t-call :as t-call]
+            [lambda-view.javascript.expression.t-conditional :as t-conditional]
             [lambda-view.javascript.expression.t-function :as t-function-exp]
             [lambda-view.javascript.expression.t-logical :as t-logical]
             [lambda-view.javascript.expression.t-member :as t-member]
+            [lambda-view.javascript.expression.t-new :as t-new]
             [lambda-view.javascript.expression.t-object :as t-object]
             [lambda-view.javascript.expression.t-sequence :as t-sequence]
+            [lambda-view.javascript.expression.t-tagged-template :as t-tagged-template]
             [lambda-view.javascript.expression.t-this :as t-this]
-            [lambda-view.javascript.expression.t-unary :as t-unary]))
+            [lambda-view.javascript.expression.t-unary :as t-unary]
+            [lambda-view.javascript.expression.t-update :as t-update]
+            [lambda-view.javascript.expression.t-yield :as t-yield]))
 
 ;; Map node type to render function
 (def type-render {"Identifier"               t-identifier/render
                   "Literal"                  t-literal/render
                   "Program"                  t-program/render
+                  "TemplateLiteral"          t-template-literal/template-literal-render
+                  "TemplateElement"          t-template-literal/template-element-render
                   ; Declaration
                   "ClassDeclaration"         t-class/class-declaration-render
                   "ClassBody"                t-class/class-body-render
@@ -81,17 +91,24 @@
                   ;; Expression
                   "ArrayExpression"          t-array/render
                   "ArrowFunctionExpression"  t-arrow-function/render
+                  "AwaitExpression"          t-await/render
                   "AssignmentExpression"     t-assignment/render
                   "BinaryExpression"         t-binary/render
+                  "CallExpression"           t-call/render
+                  "ConditionalExpression"    t-conditional/render
                   "FunctionExpression"       t-function-exp/render
                   "LogicalExpression"        t-logical/render
                   "MemberExpression"         t-member/render
+                  "NewExpression"            t-new/render
                   "ObjectExpression"         t-object/object-expression-render
                   "Property"                 t-object/property-render
                   "SpreadElement"            t-object/spread-element
                   "SequenceExpression"       t-sequence/render
+                  "TaggedTemplateExpression" t-tagged-template/render
                   "ThisExpression"           t-this/render
-                  "UnaryExpression"          t-unary/render})
+                  "UnaryExpression"          t-unary/render
+                  "UpdateExpression"         t-update/render
+                  "YieldExpression"          t-yield/render})
 
 (bridge/setup-render-imp-of-type (fn [type] (get type-render type)))
 
@@ -105,5 +122,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-object/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-tagged-template/demo))
 

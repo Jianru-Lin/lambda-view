@@ -1,7 +1,7 @@
 ;; ESTree Spec
 ;; https://github.com/estree/estree
 
-(ns lambda-view.javascript.expression.t-assignment
+(ns lambda-view.javascript.expression.t-tagged-template
   (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [smart-box
                                               operator
@@ -9,17 +9,12 @@
         [lambda-view.tag :only [id-of]]
         [lambda-view.javascript.expression.utils :only [render-node-by-priority]]))
 
-;; AssignmentExpression
+;; TaggedTemplateExpression
 (defn render [node]
-  (let [op (get node "operator")
-        left (get node "left")
-        right (get node "right")]
-    [:div.assignment.expression
-     (render-node-by-priority node left)
-     (white-space-optional)
-     (operator op)
-     (white-space-optional)
-     (render-node-by-priority node right)]))
+  (let [tag (get node "tag")
+        quasi (get node "quasi")]
+    [:div.tagged-template.expression
+     (render-node-by-priority node tag)
+     (render-node-by-priority node quasi)]))
 
-(def demo ["a = 1"
-           "c = d = 2"])
+(def demo ["tag`text`"])

@@ -2,33 +2,32 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.expression.t-member
-  (:use [lambda-view.javascript.common :only [js-keyword
-                                              white-space
-                                              white-space-optional
-                                              asterisk
-                                              comma
-                                              common-list
-                                              operator
-                                              collapsable-box
-                                              render-exp-node]]
+  (:use [lambda-view.javascript.render :only [render-node]]
+        [lambda-view.javascript.common :only [smart-box
+                                              operator]]
         [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+        [lambda-view.javascript.expression.utils :only [render-node-by-priority]]))
 
 ;; MemberExpression
 (defn render [node]
-  (let [object (get node "object")
+  (let [id (id-of node)
+        object (get node "object")
         property (get node "property")
         computed (get node "computed")]
     [:div.member.expression
-     (render-exp-node object node)
-     (if computed (list "["
-                        (render-exp-node property node)
-                        "]")
+     (render-node-by-priority node object)
+     (if computed (smart-box {:id            id
+                              :pair          :bracket
+                              :style         :mini
+                              :init-collapse false} [property])
                   (list (operator ".")
-                        (render-exp-node property node)))]))
+                        (render-node-by-priority node property)))]))
 
 (def demo ["a.b;"
            "a.b.c;"
            "a[b];"
-           "a[b][c];"])
+           "a[b][c];"
+           "(a.b).c;"
+           ;; impposible "a.(b.c)"
+           "(a+b).c;"
+           ])
