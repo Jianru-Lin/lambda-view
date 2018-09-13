@@ -2,16 +2,13 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.declaration.t-class
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!]]))
+                                              white-space
+                                              white-space-optional
+                                              asterisk
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; ClassDeclaration
 (defn class-declaration-render [node]
@@ -22,11 +19,11 @@
      (js-keyword "class")
      (white-space)
      (render-node id)
-     (if-not (nil? super-class) (list (white-space)
-                                      (js-keyword "extends")
-                                      (white-space)
-                                      (render-node super-class)
-                                      (white-space-optional)))
+     (if-not (nil? super-class) [:div
+                                 (white-space)
+                                 (js-keyword "extends")
+                                 (white-space)
+                                 (render-node super-class)])
      (white-space-optional)
      (render-node body)]))
 
@@ -34,10 +31,11 @@
 (defn class-body-render [node]
   (let [id (id-of node)
         body (get node "body")]
-    (init-collapse! id true)
     [:div {:class "class-body"}
-     (collapsable-box {:id   id
-                       :pair :brace} (render-node-coll body))]))
+     (smart-box {:id          id
+                 :pair        :brace
+                 :seperator   :none
+                 :init-layout "vertical"} body)]))
 
 ;; MethodDefinition
 (defn method-definition-render [node]
@@ -47,7 +45,7 @@
         key (get node "key")
         value (get node "value")]
     [:div {:class "method-definition"}
-     (if static (list (js-keyword "static") (white-space)))
+     (if static [:div (js-keyword "static") (white-space)])
      (cond
        ;; Constructor or Method
        (or (= kind "method")
@@ -59,29 +57,37 @@
                                          params (get fn-exp-node "params")
                                          params-id (str (id-of node) ".params")
                                          body (get fn-exp-node "body")]
-                                     (init-collapse! params-id false)
-                                     (list (if async (list (js-keyword "async") ;; optional?
-                                                           (white-space)))
-                                           (if generator (list (asterisk)
-                                                               (white-space))) ;; optional?
-                                           (render-node key)
-                                           (white-space-optional)
-                                           (collapsable-box {:id params-id} (common-list {:id params-id} params))
-                                           (white-space-optional)
-                                           (render-node body)))
+                                     [:div
+                                      (if async [:div
+                                                 (js-keyword "async") ;; optional?
+                                                 (white-space)])
+                                      (if generator [:div
+                                                     (asterisk)
+                                                     (white-space)]) ;; optional?
+                                      (render-node key)
+                                      (white-space-optional)
+                                      (smart-box {:id          params-id
+                                                  :pair        :parenthesis
+                                                  :seperator   :comma
+                                                  :init-layout (if (> (count params) 4) "vertical" "horizontal")} params)
+                                      (white-space-optional)
+                                      (render-node body)])
        (or (= kind "get")
            (= kind "set")) (let [fn-exp-node value
                                  params (get fn-exp-node "params")
                                  params-id (str (id-of node) ".params")
                                  body (get fn-exp-node "body")]
-                             (init-collapse! params-id false)
-                             (list (js-keyword kind)
-                                   (white-space)
-                                   (render-node key)
-                                   (white-space-optional)
-                                   (collapsable-box {:id params-id} (common-list {:id params-id} params))
-                                   (white-space-optional)
-                                   (render-node body))))]))
+                             [:div
+                              (js-keyword kind)
+                              (white-space)
+                              (render-node key)
+                              (white-space-optional)
+                              (smart-box {:id          params-id
+                                          :pair        :parenthesis
+                                          :seperator   :comma
+                                          :init-layout (if (> (count params) 4) "vertical" "horizontal")} params)
+                              (white-space-optional)
+                              (render-node body)]))]))
 
 (def demo [;"class a1 {}"
            ;"class a2 extends b2 {}"

@@ -109,33 +109,7 @@
 (defn toggle-layout-element [id ele]
   [:div.toggle-layout {:on-click #(state/toggle-layout! id)} ele])
 
-(defn common-list [attr coll]
-  (if (nil? coll) nil
-                  (let [id (:id attr)
-                        sep (cond
-                              (= (:sep attr) :comma) (comma)
-                              true (comma))
-                        tail-idx (- (count coll) 1)]
-                    (state/init-layout! id (if (> tail-idx 4) "vertical" "horizontal"))
-                    (doall (map-indexed (fn [idx e] ^{:key (id-of e)} [:div.box-element
-                                                                       (render-node e)
-                                                                       (if (not= idx tail-idx) (list (toggle-layout-element id sep)
-                                                                                                     (white-space-optional)))])
-                                        coll)))))
-
 (declare smart-box)
-
-(defn render-exp-node [exp-node parent-exp-node]
-  ; TODO Compare Priority...
-  (mark-id! exp-node)
-  (if (or (nil? parent-exp-node)
-          (= "Identifier" (get exp-node "type"))
-          (= "Literal" (get exp-node "type"))) (render-node exp-node)
-                                               (let [id (id-of exp-node)]
-                                                 (smart-box {:id            id
-                                                             :pair          :parenthesis
-                                                             :init-layout   "horizontal"
-                                                             :init-collapse false} [exp-node]))))
 
 (defn common-list2 [attr coll]
   (let [id (:id attr)

@@ -2,20 +2,15 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.declaration.t-variable
-  (:require [lambda-view.utils :as utils])
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   equal
-                                   common-list
-                                   collapsable-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                              white-space
+                                              white-space-optional
+                                              asterisk
+                                              comma
+                                              equal
+                                              smart-box]]
+        [lambda-view.tag :only [id-of]]))
 
 ;; VariableDeclaration
 (defn variable-declaration-render [node]
@@ -24,18 +19,24 @@
     [:div {:class "variable declaration"}
      (js-keyword kind)
      (white-space)
-     (utils/join (render-node-coll declarations) (list (comma) (white-space-optional)))]))
+     (smart-box {:id          (id-of node)
+                 :pair        :none
+                 :style       :mini
+                 :seperator   :comma
+                 :init-layout (if (> (count declarations) 4) "vertical" "horizontal")} declarations)]))
 
 ;; VariableDeclarator
 (defn variable-declarator-render [node]
   (let [id (get node "id")
         init (get node "init")]
-    [:div {:class "variable-declarator"}
-     (render-node id)
-     (if-not (nil? init) (list (white-space-optional)
-                               (equal)
-                               (white-space-optional)
-                               (render-node init)))]))
+    (if (nil? init) [:div {:class "variable-declarator"}
+                     (render-node id)]
+                    [:div {:class "variable-declarator"}
+                     (render-node id)
+                     (white-space-optional)
+                     (equal)
+                     (white-space-optional)
+                     (render-node init)])))
 
 
 (def demo ["var a1"

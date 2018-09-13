@@ -16,8 +16,8 @@
 (defn parse! [source]
   (try
     (let [ast-raw (js/acorn.parse source #js {:ecmaVersion                 "10"
-                                              ;; :sourceType                  "module"
-                                              :sourceType                  "script"
+                                              :sourceType                  "module"
+                                              ;:sourceType                  "script"
                                               :allowReturnOutsideFunction  true
                                               :allowImportExportEverywhere true
                                               :allowAwaitOutsideFunction   true

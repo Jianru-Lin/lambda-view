@@ -2,15 +2,13 @@
 ;; https://github.com/estree/estree
 
 (ns lambda-view.javascript.declaration.t-import
-  (:use [lambda-view.javascript.render :only [render-node
-                                            render-node-coll]]
+  (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [js-keyword
-                                   white-space
-                                   white-space-optional
-                                   asterisk
-                                   comma
-                                   common-list
-                                   collapsable-box]]
+                                              white-space
+                                              white-space-optional
+                                              asterisk
+                                              comma
+                                              smart-box]]
         [lambda-view.tag :only [id-of]]
         [lambda-view.state :only [init-collapse!
                                   init-layout!]]))
@@ -38,8 +36,11 @@
                                               second-sp (second specifiers)
                                               second-sp-type (get second-sp "type")
                                               rest-sps (rest specifiers)
-                                              render-list (fn [import-specifier-list] (collapsable-box {:id   id
-                                                                                                        :pair :brace} (common-list {:id id} import-specifier-list)))]
+                                              render-list (fn [import-specifier-list] (smart-box {:id            id
+                                                                                                  :pair          :brace
+                                                                                                  :seperator     :comma
+                                                                                                  :init-collapse false
+                                                                                                  :init-layout   "horizontal"} import-specifier-list))]
                                           (cond
                                             ;; case 1
                                             (and first-sp-only

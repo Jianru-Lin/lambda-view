@@ -8,7 +8,9 @@
             [lambda-view.javascript.basic.t-program :as t-program]
             [lambda-view.javascript.basic.t-template-literal :as t-template-literal]
             [lambda-view.javascript.declaration.t-class :as t-class]
+            [lambda-view.javascript.declaration.t-export-all :as t-export-all]
             [lambda-view.javascript.declaration.t-export-default :as t-export-default]
+            [lambda-view.javascript.declaration.t-export-named :as t-export-named]
             [lambda-view.javascript.declaration.t-function :as t-function]
             [lambda-view.javascript.declaration.t-import :as t-import]
             [lambda-view.javascript.declaration.t-variable :as t-variable]
@@ -59,7 +61,10 @@
                   "ClassDeclaration"         t-class/class-declaration-render
                   "ClassBody"                t-class/class-body-render
                   "MethodDefinition"         t-class/method-definition-render
+                  "ExportAllDeclaration"     t-export-all/render
                   "ExportDefaultDeclaration" t-export-default/render
+                  "ExportNamedDeclaration"   t-export-named/export-named-render
+                  "ExportSpecifier"          t-export-named/export-specifier-render
                   "FunctionDeclaration"      t-function/render
                   "ImportDeclaration"        t-import/import-declaration-render
                   "ImportDefaultSpecifier"   t-import/import-default-specifier-render
@@ -122,5 +127,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-tagged-template/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-class/demo))
 

@@ -1,7 +1,8 @@
 (ns lambda-view.javascript.expression.utils
   (:use [lambda-view.javascript.render :only [render-node]]
         [lambda-view.javascript.common :only [smart-box]]
-        [lambda-view.tag :only [id-of]]))
+        [lambda-view.tag :only [id-of
+                                mark-id!]]))
 
 (def priority-table {
                      "SequenceExpression"       0
@@ -54,7 +55,6 @@
         (= (get node "type") "BinaryExpression")
         (= (get node "type") "LogicalExpression"))
       (let [op-p (get p (get node "operator"))]
-        (println "BinaryExpression" (get node "operator") op-p)
         (if-not (nil? op-p) op-p
                             (throw (js/Error. (str "BinaryExpression Operator Priority Not Defined: " (get node "type"))))))
 
@@ -63,33 +63,39 @@
       p)))
 
 (defn render-node-by-priority [current child]
-  (println "render-node-by-priority" child)
   (let [child-type (get child "type")]
     (cond
       ;; basic element (Primary Expression)
       (or (= child-type "Identifier")
           (= child-type "Literal")
-          (= child-type "TemplateLiteral"))
+          (= child-type "ThisExpression")
+          (= child-type "TemplateLiteral")
+          (= child-type "ArrayExpression"))
       (render-node child)
 
-      ;; special cases (is this neccesarry/complete?)
+      ;; special cases (Primary Expression too) (is this neccesarry/complete?)
+      ;; NOT ALWAYS, eg:
+      ;;     OK:      if ({a: 1}.a == 1) 2
+      ;;     NOT OK:  {a: 1}.a
       (or (= child-type "ObjectExpression")
           (= child-type "FunctionExpression")
-          (= child-type "ArrowFunctionExpression"))
-      (smart-box {:id            (id-of current)
+          (= child-type "ArrowFunctionExpression")
+          (= child-type "AwaitExpression")
+          (= child-type "YieldExpression"))
+      (smart-box {:id            (str (id-of child) ".b")
                   :pair          :parenthesis
                   :init-collapse false
                   :style         :mini} [child])
 
       ;; sub expression element
       (< (priority-of child) (priority-of current))
-      (do (println "child < current" (priority-of child) "<" (priority-of current))
-          (smart-box {:id            (id-of current)
-                      :pair          :parenthesis
-                      :init-collapse false
-                      :style         :mini} [child]))
+      (do #_(println "child < current" (priority-of child) "<" (priority-of current))
+        (smart-box {:id            (str (id-of child) ".b")
+                    :pair          :parenthesis
+                    :init-collapse false
+                    :style         :mini} [child]))
 
       true
-      (do (println "child > current" (priority-of child) ">" (priority-of current))
-          (render-node child))
+      (do #_(println "child > current" (priority-of child) ">" (priority-of current))
+        (render-node child))
       )))

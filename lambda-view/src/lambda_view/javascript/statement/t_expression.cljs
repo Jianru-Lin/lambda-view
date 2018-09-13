@@ -12,12 +12,16 @@
 (defn render [node]
   (let [id (id-of node)
         expression (get node "expression")
-        directive (get node "directive")]
+        directive (get node "directive")
+        expression-type (get expression "type")]
     [:div {:class "expression statement"}
      (smart-box {:id            id
                  :style         :mini
                  ;; TODO only show pairs for object/array/? expression is required?
-                 :pair          :parenthesis
+                 :pair          (cond
+                                  (or (= expression-type "FunctionExpression")
+                                      (= expression-type "ObjectExpression")) :parenthesis
+                                  true :none)
                  :seperator     :none
                  :init-collapse false
                  :init-layout   "horizontal"} [expression])

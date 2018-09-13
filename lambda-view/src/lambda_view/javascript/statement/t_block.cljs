@@ -10,9 +10,10 @@
   (let [id (id-of node)
         body (get node "body")]
     [:div.block.statement
-     (smart-box {:id id
-                 :pair :brace
-                 :init-collapse true} body)]))
+     (smart-box {:id            id
+                 :pair          :brace
+                 :init-collapse true
+                 :init-layout   "vertical"} body)]))
 
 
 (def demo ["{}"
