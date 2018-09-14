@@ -8,8 +8,7 @@
                                               white-space
                                               white-space-optional
                                               asterisk]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!]]))
+        [lambda-view.tag :only [id-of]]))
 
 ;; ExportDefaultDeclaration
 (defn render [node]

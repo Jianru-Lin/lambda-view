@@ -24,8 +24,9 @@
         params (get node "params")
         body (get node "body")]
     [:div.arrow-function.expression
-     (if async (list (js-keyword "async")
-                     (white-space)))
+     (if async [:div
+                (js-keyword "async")
+                (white-space)])
      (smart-box {:id            (str (id-of node) ".params")
                  :pair          :parenthesis
                  :seperator     :comma

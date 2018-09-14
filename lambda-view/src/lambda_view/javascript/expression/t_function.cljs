@@ -9,9 +9,7 @@
                                               white-space-optional
                                               asterisk
                                               smart-box]]
-        [lambda-view.tag :only [id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+        [lambda-view.tag :only [id-of]]))
 
 ;; FunctionExpression
 (defn render [node]
@@ -26,14 +24,17 @@
         params (get node "params")
         body (get node "body")]
     [:div.function.expression
-     (if async (list (js-keyword "async")
-                     (white-space)))
+     (if async [:div
+                (js-keyword "async")
+                (white-space)])
      (js-keyword "function")
      (white-space)
-     (if generator (list (asterisk)
-                         (white-space)))
-     (if-not (nil? id) (list (render-node id)
-                             (white-space-optional)))
+     (if generator [:div
+                    (asterisk)
+                    (white-space)])
+     (if-not (nil? id) [:div
+                        (render-node id)
+                        (white-space-optional)])
      (smart-box {:id            (str (id-of node) ".params")
                  :pair          :parenthesis
                  :seperator     :comma
@@ -58,14 +59,17 @@
         params (get node "params")
         body (get node "body")]
     [:div {:class class}
-     (if async (list (js-keyword "async")
-                     (white-space)))
+     (if async [:div
+                (js-keyword "async")
+                (white-space)])
      ;(js-keyword "function")
      ;(white-space)
-     (if generator (list (asterisk)
-                         (white-space)))
-     (if-not (nil? id) (list (render-node id)
-                             (white-space-optional)))
+     (if generator [:div
+                    (asterisk)
+                    (white-space)])
+     (if-not (nil? id) [:div
+                        (render-node id)
+                        (white-space-optional)])
      (smart-box {:id            (str (id-of node) ".params")
                  :pair          :parenthesis
                  :seperator     :comma

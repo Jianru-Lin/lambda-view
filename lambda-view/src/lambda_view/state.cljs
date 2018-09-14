@@ -7,25 +7,22 @@
 (def collapse (reagent/atom {}))
 
 (defn init-collapse! [id v]
-  (let [current (get @collapse id)]
+  (let [current @(reagent/cursor collapse [id])]
     (if (nil? current) (do #_(println "init-collapse!" id v)
-                           (swap! collapse assoc id v)))))
+                           (swap! collapse assoc id v)))
+    v))
 
 (defn get-collapse [id]
-  (let [v (get @collapse id)
-        ret (if (nil? v) false v)]
-    #_(println "get-collapse" id ret)
-    ret))
+  (let [v @(reagent/cursor collapse [id])]
+    (if (nil? v) (init-collapse! id v)
+                 v)))
 
 (defn set-collapse! [id v]
   #_(println "set-collapse!" id v)
   (swap! collapse assoc id v))
 
 (defn toggle-collapse! [id]
-  (let [v (get @collapse id)]
-    (if-not (nil? v) (do #_(println "toggle-collapse!" id "from" v "to" (not v))
-                         (swap! collapse assoc id (not v)))
-                     (do #_(println "toggle-collapse!" id "ignore")))))
+  (set-collapse! id (not (get-collapse id))))
 
 ;; Layout State ;; TODO GC
 
@@ -59,13 +56,13 @@
 ;; id -> boolean
 (def hover (reagent/atom {}))
 
-(defn init-hover! [id v]
-  (let [current (get @hover id)]
-    (if (nil? current) (do #_(println "init-hover!" id v)
-                           (swap! hover assoc id v)))))
+;(defn init-hover! [id v]
+;  (let [current (get @hover id)]
+;    (if (nil? current) (do #_(println "init-hover!" id v)
+;                           (swap! hover assoc id v)))))
 
 (defn get-hover [id]
-  (let [v (get @hover id)
+  (let [v @(reagent/cursor hover [id])
         ret (if (nil? v) false v)]
     #_(println "get-hover" id ret)
     ret))
@@ -74,8 +71,8 @@
   #_(println "set-hover!" id v)
   (swap! hover assoc id v))
 
-(defn toggle-hover! [id]
-  (let [v (get @hover id)]
-    (if-not (nil? v) (do #_(println "toggle-hover!" id "from" v "to" (not v))
-                         (set-hover! id (not v)))
-                     (do #_(println "toggle-hover!" id "ignore")))))
+;(defn toggle-hover! [id]
+;  (let [v (get @hover id)]
+;    (if-not (nil? v) (do #_(println "toggle-hover!" id "from" v "to" (not v))
+;                         (set-hover! id (not v)))
+;                     (do #_(println "toggle-hover!" id "ignore")))))

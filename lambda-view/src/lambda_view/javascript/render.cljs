@@ -4,9 +4,7 @@
 (ns lambda-view.javascript.render
   (:require [lambda-view.javascript.bridge :as bridge])
   (:use [lambda-view.tag :only [mark-id!
-                                id-of]]
-        [lambda-view.state :only [init-collapse!
-                                  init-layout!]]))
+                                id-of]]))
 
 (defn node-render-not-found [node]
   [:div (str "Node render not found of type: " (get node "type"))])
