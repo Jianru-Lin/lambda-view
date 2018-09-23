@@ -54,7 +54,7 @@
     color: rgba(255,255,255,0.25);
     border-radius: 2px;
     cursor: pointer;
-    padding: 4px;
+    padding: 0 4px;
 }
 
 .lambda-view .collapsed.mini {
@@ -96,13 +96,13 @@
     border-radius: 4px;
     background: rgba(162, 162, 162, 0.05);
     padding: 1em;
-    outline: solid 1px #2D2D2D;
+    border: solid 1px #2D2D2D;
     white-space: pre;
 }
 
-.lambda-view .box.mini {
+.lambda-view .box.mini:not(.vertical) {
     background: transparent;
-    outline: none;
+    border: none;
     padding: 0;
 }
 
@@ -128,7 +128,7 @@
 }
 
 .lambda-view .toggle-layout:hover {
-    color: #ff8888;
+    color: white;
 }
 
 /* Color Theme */
@@ -141,7 +141,7 @@
 
     /* Vertical Rhythms */
     font-size: 16px;
-    line-height: 24px;
+    line-height: 48px;
 }
 
 .lambda-view .keyword {
@@ -159,6 +159,10 @@
 
 .lambda-view .operator {
     color: #66CCCC;
+}
+
+.lambda-view .property > .identifier:first-child {
+    color: hsl(26, 83%, 71%);
 }
 
 /* Color Theme - Hover Transition */
@@ -199,6 +203,16 @@
     opacity: 0.5;
 }
 
-.lambda-view .semicolon {
+.lambda-view .semicolon,
+.lambda-view .comma,
+.lambda-view .colon {
     opacity: 0.2;
+}
+
+/* Readability */
+
+.lambda-view .collapsed,
+.lambda-view .pair.left,
+.lambda-view .pair.right {
+    line-height: 24px;
 }

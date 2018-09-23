@@ -1,6 +1,9 @@
 (ns lambda-view.core
+  (:require-macros [cljs.core.async :refer [go]])
   (:require [reagent.core :as reagent :refer [atom]]
-            [lambda-view.javascript.core :as js-lang]))
+            [lambda-view.javascript.core :as js-lang]
+            [cljs.core.async :refer [<!]]
+            [cljs-http.client :as http]))
 
 (enable-console-print!)
 
@@ -8,10 +11,13 @@
 
 ;; define your app data so that it doesn't get over-written on reload
 
-(defonce app-state (atom {:source   (js-lang/current)
-                          :ast-json nil
-                          :ast      nil
-                          :error    nil}))
+(defonce app-state (atom {:source       (js-lang/current)
+                          :auto-compile true
+                          :show-ast     false
+                          :ast-json     nil
+                          :ast          nil
+                          :error        nil
+                          :loading      false}))
 
 (defn parse! [source]
   (try
@@ -35,6 +41,14 @@
   (swap! app-state assoc :source source)
   (parse! source))
 
+(defn load-remote-source [url]
+  (swap! app-state assoc :loading true)
+  (go (let [response (<! (http/get url))]
+        (swap! app-state assoc :loading false)
+        (if (= 200 (:status response))
+          (if (= true (:auto-compile @app-state)) (regen (:body response))
+                                                  (swap! app-state assoc :source (:body response)))))))
+
 (defn src-editor []
   [:div
    [:h1 "Source Editor"]
@@ -43,9 +57,34 @@
                            :width       "100%"
                            :font-size   "inherit"
                            :font-family "inherit"}
+               :disabled  (:loading @app-state)
                :rows      "8"
                :value     (:source @app-state)
-               :on-change (fn [e] (let [source (.-target.value e)] (regen source)))}]])
+               :on-change (fn [e]
+                            (let [source (.-target.value e)]
+                              (if (:auto-compile @app-state) (regen source)
+                                                             (swap! app-state assoc :source source))))}]
+   [:div {:style {:display        :flex
+                  :flex-direction :rows
+                  :padding        "16px 0"}}
+    [:label [:input {:type      "checkbox"
+                     :checked   (:show-ast @app-state)
+                     :on-change (fn [e]
+                                  (swap! app-state assoc :show-ast (.-checked (.-target e))))}] "Show AST"]
+    [:label [:input {:type      "checkbox"
+                     :style     {:margin-left 16}
+                     :checked   (:auto-compile @app-state)
+                     :on-change (fn [e]
+                                  (swap! app-state assoc :auto-compile (.-checked (.-target e))))}] "Auto Compile"]
+    [:button {:disabled (:auto-compile @app-state)
+              :style    {:margin-left 16}
+              :on-click (fn [] (regen (:source @app-state)))} "Compile"]
+    [:button {:disabled (:loading @app-state)
+              :style    {:margin-left 16}
+              :on-click (fn [] (load-remote-source "/data/jquery.js"))} "Load jQuery"]
+    [:button {:disabled (:loading @app-state)
+              :style    {:margin-left 16}
+              :on-click (fn [] (regen ""))} "Clear"]]])
 
 ;; Demo List
 (defn demo-list []
@@ -109,7 +148,7 @@
     [src-editor]
     [:div {:style {:display               "grid"
                    :grid-template-columns "1fr 1fr"}}
-     [ast-viewer]
+     (if (:show-ast @app-state) [ast-viewer])
      [ast-render]]]])
 
 (reagent/render-component [hello-world]

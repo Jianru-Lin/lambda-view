@@ -13,7 +13,7 @@
   (let [test (get node "test")
         consequent (get node "consequent")                          ;TODO when will it be false?
         alternate (get node "alternate")]
-    [:div.conditional.expression
+    [:div.conditional.expression.box.horizontal
      (render-node-by-priority node test)
      (white-space-optional)
      [:div.branch

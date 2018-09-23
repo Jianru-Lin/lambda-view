@@ -18,7 +18,7 @@
     [:div {:class "if statement"}
      (js-keyword "if") (white-space-optional) (smart-box {:id            test-id
                                                           :pair          :parenthesis
-                                                          :init-collapse true} [test]) (white-space-optional)
+                                                          :init-collapse false} [test]) (white-space-optional)
      (render-node consequent)
      (if (nil? alternate)
        nil
