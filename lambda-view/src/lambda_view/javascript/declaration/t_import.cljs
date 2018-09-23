@@ -8,6 +8,7 @@
                                               white-space-optional
                                               asterisk
                                               comma
+                                              semicolon
                                               smart-box]]
         [lambda-view.tag :only [id-of]]))
 
@@ -69,7 +70,9 @@
                                    (white-space)
                                    (js-keyword "from")])
      (white-space)
-     (render-node source)]))
+     (render-node source)
+     (white-space-optional)
+     (semicolon)]))
 
 ;; ImportDefaultSpecifier
 (defn import-default-specifier-render [node]

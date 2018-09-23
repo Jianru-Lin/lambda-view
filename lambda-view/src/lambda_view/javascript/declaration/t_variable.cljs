@@ -8,6 +8,7 @@
                                               white-space-optional
                                               asterisk
                                               comma
+                                              semicolon
                                               equal
                                               smart-box]]
         [lambda-view.tag :only [id-of]]))
@@ -23,7 +24,9 @@
                  :pair        :none
                  :style       :mini
                  :seperator   :comma
-                 :init-layout (if (> (count declarations) 4) "vertical" "horizontal")} declarations)]))
+                 :init-layout (if (> (count declarations) 4) "vertical" "horizontal")} declarations)
+     (white-space-optional)
+     (semicolon)]))
 
 ;; VariableDeclarator
 (defn variable-declarator-render [node]

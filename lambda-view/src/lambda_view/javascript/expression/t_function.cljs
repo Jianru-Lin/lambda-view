@@ -38,6 +38,7 @@
      (smart-box {:id            (str (id-of node) ".params")
                  :pair          :parenthesis
                  :seperator     :comma
+                 :style         :mini
                  :init-collapse false
                  :init-layout   "horizontal"} params)
      (white-space-optional)
@@ -73,6 +74,7 @@
      (smart-box {:id            (str (id-of node) ".params")
                  :pair          :parenthesis
                  :seperator     :comma
+                 :style         :mini
                  :init-collapse false
                  :init-layout   "horizontal"} params)
      (white-space-optional)

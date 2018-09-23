@@ -20,8 +20,9 @@
                               :pair          :bracket
                               :style         :mini
                               :init-collapse false} [property])
-                  (list (operator ".")
-                        (render-node-by-priority node property)))]))
+                  [:div
+                   (operator ".")
+                   (render-node-by-priority node property)])]))
 
 (def demo ["a.b;"
            "a.b.c;"

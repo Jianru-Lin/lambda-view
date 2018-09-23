@@ -16,5 +16,8 @@
                  :init-layout   "vertical"} body)]))
 
 
-(def demo ["{}"
-           "{label: statement}"])
+(def demo [
+           "{}"
+           "{1}"
+           "{label: statement}"
+           ])

@@ -10,3 +10,5 @@
    {:class "program"}
    (let [body (get node "body")]
      (if-not (nil? body) (render-node-coll body)))])
+
+(def demo [])

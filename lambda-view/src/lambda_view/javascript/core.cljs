@@ -115,6 +115,59 @@
                   "UpdateExpression"         t-update/render
                   "YieldExpression"          t-yield/render})
 
+
+;; Map node type to demo
+(def type-demo {"Identifier"               t-identifier/demo
+                "Literal"                  t-literal/demo
+                "Program"                  t-program/demo
+                "TemplateLiteral"          t-template-literal/demo
+                ; Declaration
+                "ClassDeclaration"         t-class/demo
+                "ExportAllDeclaration"     t-export-all/demo
+                "ExportDefaultDeclaration" t-export-default/demo
+                "ExportNamedDeclaration"   t-export-named/demo
+                "FunctionDeclaration"      t-function/demo
+                "ImportDeclaration"        t-import/demo
+                "VariableDeclaration"      t-variable/demo
+                ; Statement
+                "BlockStatement"           t-block/demo
+                "BreakStatement"           t-break/demo
+                "ContinueStatement"        t-continue/demo
+                "DebuggerStatement"        t-debugger/demo
+                "DoWhileStatement"         t-do-while/demo
+                "EmptyStatement"           t-empty/demo
+                "ExpressionStatement"      t-expression/demo
+                "ForStatement"             t-for/demo
+                "ForInStatement"           t-for-in/demo
+                "ForOfStatement"           t-for-of/demo
+                "IfStatement"              t-if/demo
+                "LabeledStatement"         t-labeled/demo
+                "ReturnStatement"          t-return/demo
+                "SwitchStatement"          t-switch/demo
+                "ThrowStatement"           t-throw/demo
+                "TryStatement"             t-try/demo
+                "WhileStatement"           t-while/demo
+                "WithStatement"            t-with/demo
+                ;; Expression
+                "ArrayExpression"          t-array/demo
+                "ArrowFunctionExpression"  t-arrow-function/demo
+                "AwaitExpression"          t-await/demo
+                "AssignmentExpression"     t-assignment/demo
+                "BinaryExpression"         t-binary/demo
+                "CallExpression"           t-call/demo
+                "ConditionalExpression"    t-conditional/demo
+                "FunctionExpression"       t-function-exp/demo
+                "LogicalExpression"        t-logical/demo
+                "MemberExpression"         t-member/demo
+                "NewExpression"            t-new/demo
+                "ObjectExpression"         t-object/demo
+                "SequenceExpression"       t-sequence/demo
+                "TaggedTemplateExpression" t-tagged-template/demo
+                "ThisExpression"           t-this/demo
+                "UnaryExpression"          t-unary/demo
+                "UpdateExpression"         t-update/demo
+                "YieldExpression"          t-yield/demo})
+
 (bridge/setup-render-imp-of-type (fn [type] (get type-render type)))
 
 (defn ast-render [ast]
@@ -127,5 +180,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-class/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-array/demo))
 

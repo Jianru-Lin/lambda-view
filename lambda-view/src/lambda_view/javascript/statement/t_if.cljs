@@ -22,7 +22,11 @@
      (render-node consequent)
      (if (nil? alternate)
        nil
-       (list (white-space-optional) (js-keyword "else") (white-space-optional) (render-node alternate)))]))
+       [:div
+        (white-space-optional)
+        (js-keyword "else")
+        (white-space-optional)
+        (render-node alternate)])]))
 
 (def demo ["if (1) 2"
            "if (1) {2}"

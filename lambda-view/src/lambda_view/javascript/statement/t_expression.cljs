@@ -27,3 +27,5 @@
                  :init-layout   "horizontal"} [expression])
      (white-space-optional)
      (semicolon)]))
+
+(def demo [])

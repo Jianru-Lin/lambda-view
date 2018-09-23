@@ -7,6 +7,7 @@
         [lambda-view.javascript.common :only [js-keyword
                                               white-space
                                               white-space-optional
+                                              semicolon
                                               asterisk]]
         [lambda-view.tag :only [id-of]]))
 
@@ -19,6 +20,8 @@
    (white-space)
    (js-keyword "from")
    (white-space)
-   (render-node (get node "source"))])
+   (render-node (get node "source"))
+   (white-space-optional)
+   (semicolon)])
 
 (def demo ["export * from \"m\""])

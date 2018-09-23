@@ -67,6 +67,18 @@
 
 (def slashes (pair "/" "/"))
 
+(defn arrow [attr content]
+  (let [id (:id attr)
+        hover (if (state/get-hover id) "hover" nil)
+        on-click (:on-click attr)]
+    [:div.pair
+     [:div.pair.left {:class          hover
+                      :on-mouse-enter #(state/set-hover! id true)
+                      :on-mouse-leave #(state/set-hover! id false)
+                      :on-click       on-click} "=>"]
+     (white-space-optional)
+     content]))
+
 (defn box [attr content]
   (let [id (:id attr)
         style (if (= (:style attr) :mini) "mini")
@@ -92,6 +104,7 @@
                        (= pair :single-quote) single-quote
                        (= pair :back-quote) back-quote
                        (= pair :slash) slashes
+                       (= pair :arrow) arrow
                        (= pair :none) nil
                        true (throw (js/Error. (str "Invalid pair option: " pair))))
         style (:style attr)

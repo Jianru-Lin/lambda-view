@@ -1,0 +1,87 @@
+(ns lambda-view.state
+  (:require [reagent.core :as reagent]))
+
+;; Collapse State ;; TODO GC
+
+;; id -> boolean
+(def state-db (atom {}))
+
+(defn init-collapse! [id v]
+  (let [record (get @state-db id)]
+    (if (nil? record) (do (println "init-collapse" id v)
+                          (swap! state-db assoc id (atom {:collapse v}))
+                          (println state-db)))))
+
+(defn get-collapse [id]
+  (let [record (get @state-db id)
+        ret (if (nil? record) false (:collapse @record))]
+    (if (nil? record) (println "get-collapse" id "nil")
+                      (println "get-collapse" id ret))
+    ret))
+
+(defn set-collapse! [id v]
+  (let [record (get @state-db id)]
+    (if-not (nil? record) (do (swap! record assoc :collapse v)
+                              (println "set-collapse" id v)
+                              (println state-db))
+                          (do (println "set-collapse" id "ignore")))))
+
+(defn toggle-collapse! [id]
+  (set-collapse! id (not (get-collapse id))))
+
+;; Layout State ;; TODO GC
+
+;; id -> "horizontal" | "vertical"
+#_(def layout (reagent/atom {}))
+
+#_(defn init-layout! [id v]
+  (let [current @(reagent/cursor layout [id])]
+    (if (nil? current) (do #_(println "init-layout!" id v)
+                         (swap! layout assoc id v)))))
+
+#_(defn get-layout [id]
+  (let [v @(reagent/cursor layout [id])
+        ret (if (nil? v) false v)]
+    #_(println "get-layout" id ret)
+    ret))
+
+#_(defn set-layout! [id v]
+  #_(println "set-layout!" id v)
+  (swap! layout assoc id v))
+
+#_(defn toggle-layout! [id]
+  (let [v @(reagent/cursor layout [id])]
+    (if-not (nil? v) (let [new-v (if (= "horizontal" v) "vertical" "horizontal")]
+                       #_(println "toggle-layout!" id "from" v "to" new-v)
+                       (swap! layout assoc id new-v))
+                     (do #_(println "toggle-layout!" id "ignore")))))
+
+(defn init-layout! [id v] nil)
+(defn get-layout [id] nil)
+(defn toggle-layout! [id] nil)
+
+;; Hover State ;; TODO GC
+
+;; id -> boolean
+(def hover (reagent/atom {}))
+
+#_(defn init-hover! [id v]
+    (let [current @(reagent/cursor hover [id])]
+      (if (nil? current) (do #_(println "init-hover!" id v)
+                           (swap! hover assoc id v)))))
+
+(defn get-hover [id]
+  (let [v @(reagent/cursor hover [id])
+        ret (if (nil? v) false v)]
+    #_(println "get-hover" id ret)
+    ret))
+
+(defn set-hover! [id v]
+  #_(println "set-hover!" id v)
+  (swap! hover assoc id v))
+
+#_(defn toggle-hover! [id]
+    (let [v (get @hover id)]
+      (if-not (nil? v) (do #_(println "toggle-hover!" id "from" v "to" (not v))
+                         (set-hover! id (not v)))
+                       (do #_(println "toggle-hover!" id "ignore")))))

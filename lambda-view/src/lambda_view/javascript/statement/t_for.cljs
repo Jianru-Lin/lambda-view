@@ -7,7 +7,8 @@
                                               white-space-optional
                                               semicolon
                                               smart-box]]
-        [lambda-view.tag :only [id-of]]))
+        [lambda-view.tag :only [id-of
+                                mark-id!]]))
 
 ;; ForStatement
 (defn render [node]
@@ -23,7 +24,7 @@
                  :pair          :parenthesis
                  :seperator     :semicolon
                  :init-collapse false
-                 :init-layout "horizontal"} [init test update])
+                 :init-layout   "horizontal"} [init test update])
      (white-space-optional)
      (render-node body)]))
 

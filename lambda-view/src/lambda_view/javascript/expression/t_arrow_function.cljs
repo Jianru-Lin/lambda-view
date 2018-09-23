@@ -28,14 +28,18 @@
                 (js-keyword "async")
                 (white-space)])
      (smart-box {:id            (str (id-of node) ".params")
+                 :style         :mini
                  :pair          :parenthesis
                  :seperator     :comma
                  :init-collapse false
                  :init-layout   "horizontal"} params)
      (white-space-optional)
-     [:div "=>"]
-     (white-space-optional)
-     (render-node body)]))
+     (smart-box {:id            (id-of node)
+                 :style         :mini
+                 :pair          :arrow
+                 :seperator     :none
+                 :init-collapse false
+                 :init-layout   "vertical"} [body])]))
 
 (def demo ["(() => 1);"
            "(() => {1});"

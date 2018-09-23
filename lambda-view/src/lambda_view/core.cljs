@@ -38,11 +38,47 @@
 (defn src-editor []
   [:div
    [:h1 "Source Editor"]
-   [:textarea {:style     {:display :block
-                           :width   "100%"
-                           :height  100}
+   [:textarea {:style     {:display     :block
+                           :box-sizing  "border-box"
+                           :width       "100%"
+                           :font-size   "inherit"
+                           :font-family "inherit"}
+               :rows      "8"
                :value     (:source @app-state)
                :on-change (fn [e] (let [source (.-target.value e)] (regen source)))}]])
+
+;; Demo List
+(defn demo-list []
+  (let [demos (doall (map (fn [[type, demo]] [type, (clojure.string/join "\n" demo)])
+                          js-lang/type-demo))
+        basic (filter (fn [[type, _]] (and (nil? (re-find #"Declaration$" type))
+                                           (nil? (re-find #"Statement$" type))
+                                           (nil? (re-find #"Expression$" type))))
+                      demos)
+        decls (filter (fn [[type, _]] (not (nil? (re-find #"Declaration$" type))))
+                      demos)
+        stams (filter (fn [[type, _]] (not (nil? (re-find #"Statement$" type))))
+                      demos)
+        exprs (filter (fn [[type, _]] (not (nil? (re-find #"Expression$" type))))
+                      demos)
+        render-item (fn [[type, demo]]
+                      ^{:key type} [:li
+                                    {:on-click (fn [] (regen demo))}
+                                    [:a {:href "javascript:"}
+                                     type]])]
+    [:div.demo-list {:style {:overflow "auto"}}
+     [:h3 "Basic"]
+     [:ul
+      (doall (map render-item basic))]
+     [:h3 "Declaration"]
+     [:ul
+      (doall (map render-item decls))]
+     [:h3 "Statement"]
+     [:ul
+      (doall (map render-item stams))]
+     [:h3 "Expression"]
+     [:ul
+      (doall (map render-item exprs))]]))
 
 (defn ast-viewer []
   [:div
@@ -59,12 +95,22 @@
    [:div.lambda-view [js-lang/ast-render (:ast @app-state)]]])
 
 (defn hello-world []
-  [:div
-   [src-editor]
-   [:div {:style {:display "grid"
-                  :grid-template-columns "1fr 1fr"}}
-    [ast-viewer]
-    [ast-render]]])
+  [:div {:style {:display               "grid"
+                 :grid-template-columns "auto 1fr"
+                 :grid-gap              "16px"
+                 :padding               "0 16px"
+                 :position              "absolute"
+                 :left                  0
+                 :top                   0
+                 :right                 0
+                 :bottom                0}}
+   [demo-list]
+   [:div {:style {:overflow "auto"}}
+    [src-editor]
+    [:div {:style {:display               "grid"
+                   :grid-template-columns "1fr 1fr"}}
+     [ast-viewer]
+     [ast-render]]]])
 
 (reagent/render-component [hello-world]
                           (. js/document (getElementById "app")))
