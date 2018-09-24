@@ -17,9 +17,10 @@
     [:div {:class "expression statement"}
      (smart-box {:id            id
                  :style         :mini
-                 ;; TODO only show pairs for object/array/? expression is required?
+                 ;; TODO only show pairs for object/array/class? expression is required?
                  :pair          (cond
                                   (or (= expression-type "FunctionExpression")
+                                      (= expression-type "ClassExpression")
                                       (= expression-type "ObjectExpression")) :parenthesis
                                   true :none)
                  :seperator     :none

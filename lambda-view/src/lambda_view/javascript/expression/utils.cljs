@@ -77,7 +77,8 @@
       ;; NOT ALWAYS, eg:
       ;;     OK:      if ({a: 1}.a == 1) 2
       ;;     NOT OK:  {a: 1}.a
-      (or (= child-type "ObjectExpression")
+      (or (= child-type "ClassExpression")
+          (= child-type "ObjectExpression")
           (= child-type "FunctionExpression")
           (= child-type "ArrowFunctionExpression")
           (= child-type "AwaitExpression")

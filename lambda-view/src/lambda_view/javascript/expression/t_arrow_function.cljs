@@ -34,12 +34,16 @@
                  :init-collapse false
                  :init-layout   "horizontal"} params)
      (white-space-optional)
-     (smart-box {:id            (id-of node)
-                 :style         :mini
-                 :pair          :arrow
-                 :seperator     :none
-                 :init-collapse false
-                 :init-layout   "vertical"} [body])]))
+     (if (= "BlockStatement" (get body "type")) [:div
+                                                 "=>"
+                                                 [white-space-optional]
+                                                 (render-node body)]
+                                                (smart-box {:id            (id-of node)
+                                                            :style         :mini
+                                                            :pair          :arrow
+                                                            :seperator     :none
+                                                            :init-collapse false
+                                                            :init-layout   "vertical"} [body]))]))
 
 (def demo ["(() => 1);"
            "(() => {1});"

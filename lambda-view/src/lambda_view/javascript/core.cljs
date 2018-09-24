@@ -38,6 +38,7 @@
             [lambda-view.javascript.expression.t-assignment :as t-assignment]
             [lambda-view.javascript.expression.t-binary :as t-binary]
             [lambda-view.javascript.expression.t-call :as t-call]
+            [lambda-view.javascript.expression.t-class :as t-class-exp]
             [lambda-view.javascript.expression.t-conditional :as t-conditional]
             [lambda-view.javascript.expression.t-function :as t-function-exp]
             [lambda-view.javascript.expression.t-logical :as t-logical]
@@ -100,6 +101,7 @@
                   "AssignmentExpression"     t-assignment/render
                   "BinaryExpression"         t-binary/render
                   "CallExpression"           t-call/render
+                  "ClassExpression"          t-class-exp/render
                   "ConditionalExpression"    t-conditional/render
                   "FunctionExpression"       t-function-exp/render
                   "LogicalExpression"        t-logical/render
@@ -155,6 +157,7 @@
                 "AssignmentExpression"     t-assignment/demo
                 "BinaryExpression"         t-binary/demo
                 "CallExpression"           t-call/demo
+                "ClassExpression"          t-class-exp/demo
                 "ConditionalExpression"    t-conditional/demo
                 "FunctionExpression"       t-function-exp/demo
                 "LogicalExpression"        t-logical/demo
