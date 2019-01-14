@@ -148,7 +148,8 @@
     color: #CC99CC;
 }
 
-.lambda-view .identifier {
+.lambda-view .identifier,
+.lambda-view .jsx-identifier {
     color: #F2777A;
 }
 

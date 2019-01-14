@@ -17,7 +17,7 @@
 
 
 (def demo [
-           "{}"
+           ;"{}"
            "{1}"
-           "{label: statement}"
+           ;"{label: statement}"
            ])

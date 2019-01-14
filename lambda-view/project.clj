@@ -47,7 +47,7 @@
                ;; lein cljsbuild once min
                {:id "min"
                 :source-paths ["src"]
-                :compiler {:output-to "resources/public/js/compiled/lambda_view.js"
+                :compiler {:output-to "resources/public/js/compiled-min/lambda_view.min.js"
                            :main lambda-view.core
                            :optimizations :advanced
                            :pretty-print false}}]}

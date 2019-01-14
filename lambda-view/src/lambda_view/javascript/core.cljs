@@ -41,6 +41,7 @@
             [lambda-view.javascript.expression.t-class :as t-class-exp]
             [lambda-view.javascript.expression.t-conditional :as t-conditional]
             [lambda-view.javascript.expression.t-function :as t-function-exp]
+            [lambda-view.javascript.expression.t-jsx :as t-jsx]
             [lambda-view.javascript.expression.t-logical :as t-logical]
             [lambda-view.javascript.expression.t-member :as t-member]
             [lambda-view.javascript.expression.t-new :as t-new]
@@ -115,7 +116,15 @@
                   "ThisExpression"           t-this/render
                   "UnaryExpression"          t-unary/render
                   "UpdateExpression"         t-update/render
-                  "YieldExpression"          t-yield/render})
+                  "YieldExpression"          t-yield/render
+                  ;; JSX (Expression)
+                  "JSXElement"               t-jsx/jsx-element-render
+                  "JSXAttribute"             t-jsx/jsx-attribute-render
+                  "JSXExpressionContainer"   t-jsx/jsx-expression-container-render
+                  "JSXOpeningElement"        t-jsx/jsx-opening-element-render
+                  "JSXClosingElement"        t-jsx/jsx-closing-element-render
+                  "JSXIdentifier"            t-jsx/jsx-identifier
+                  "JSXText"                  t-jsx/jsx-text})
 
 
 ;; Map node type to demo
@@ -169,7 +178,9 @@
                 "ThisExpression"           t-this/demo
                 "UnaryExpression"          t-unary/demo
                 "UpdateExpression"         t-update/demo
-                "YieldExpression"          t-yield/demo})
+                "YieldExpression"          t-yield/demo
+                ;; JSX (Expression)
+                "JSXElement"               t-jsx/demo})
 
 (bridge/setup-render-imp-of-type (fn [type] (get type-render type)))
 
@@ -183,5 +194,5 @@
 (defn current [] (:current @state))
 
 ;; auto refresh
-(swap! state assoc :current (clojure.string/join "\n" t-array/demo))
+(swap! state assoc :current (clojure.string/join "\n" t-block/demo))
 

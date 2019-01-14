@@ -136,10 +136,13 @@
                                                     ;; we tested the same condition twice to avoid using (list ...)
                                                     ;; because we don't want to generate key for each element in that list again!
                                                     (if (and (not= idx tail-idx)
-                                                             (not= seperator :none)) (toggle-layout-element id (cond (= seperator :comma) (comma)
-                                                                                                                     (= seperator :semicolon) (semicolon))))
+                                                             (not= seperator :none)) (cond
+                                                                                       (= seperator :white-space) (white-space)
+                                                                                       true (toggle-layout-element id (cond (= seperator :comma) (comma)
+                                                                                                                            (= seperator :semicolon) (semicolon)))))
                                                     (if (and (not= idx tail-idx)
-                                                             (not= seperator :none)) (white-space-optional))]))
+                                                             (not= seperator :none)
+                                                             (not= seperator :white-space)) (white-space-optional))]))
                         coll))))
 
 (defn smart-box [attr coll]

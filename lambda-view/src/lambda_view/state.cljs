@@ -5,17 +5,33 @@
 
 ;; id -> boolean
 (def collapse (reagent/atom {}))
+(def force-collapse (reagent/atom {:value false}))
+
+(defn set-force-collapse [v]
+  (swap! force-collapse assoc :value v)
+  (println "set-force-collapse" v))
+
+(defn get-force-collapse []
+  (let [v (:value @force-collapse)]
+    (println "get-force-collapse" v)
+    v))
 
 (defn init-collapse! [id v]
   (let [current @(reagent/cursor collapse [id])]
-    (if (nil? current) (do #_(println "init-collapse!" id v)
+    (if (nil? current) (do (println "init-collapse!" id v)
                            (swap! collapse assoc id v)))
     v))
 
 (defn get-collapse [id]
-  (let [v @(reagent/cursor collapse [id])]
-    (if (nil? v) (init-collapse! id v)
-                 v)))
+  (println "get-collapse begin")
+  (if-not (nil? (get-force-collapse)) (do (println "get-collapse *f*" id (get-force-collapse))
+                                          (get-force-collapse))
+                                      (let [v @(reagent/cursor collapse [id])]
+                                        (if (nil? v) (do (let [init-v (init-collapse! id v)]
+                                                           (println "get-collapse *init*" id init-v)
+                                                           v))
+                                                     (do (println "get-collapse" id v)
+                                                         v)))))
 
 (defn set-collapse! [id v]
   #_(println "set-collapse!" id v)
@@ -32,7 +48,7 @@
 (defn init-layout! [id v]
   (let [current (get @layout id)]
     (if (nil? current) (do #_(println "init-layout!" id v)
-                           (swap! layout assoc id v)))))
+                         (swap! layout assoc id v)))))
 
 (defn get-layout [id]
   (let [v (get @layout id)
